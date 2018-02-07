@@ -158,7 +158,7 @@ gulp.task('deploy', () => {
 	return gulp.src('dest/**')
 		.pipe(rsync({
 			root: 'dest',
-			hostname: 'pitercss.com',
+			hostname: 'wsd.wsd',
 			destination: '/var/www/new/html/',
 			recursive: true,
 			clean: true,
