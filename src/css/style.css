@@ -1,3 +1,7 @@
 @import "fonts.css";
 @import "variables.css";
 @import "global.css";
+@import "layout.css";
+
+@import "blocks/main-logo.css";
+@import "blocks/page-header.css";

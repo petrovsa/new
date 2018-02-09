@@ -8,6 +8,8 @@
   --color-gray: rgba(0, 0, 0, 0.7);
   --color-heading: rgba(0, 0, 0, 0.85);
   --color-lists: rgba(0, 0, 0, 0.85);
+  --color-main-bg: #2B2B2B;
+  --color-white: #FFFFFF;
 
   --animation-speed: 0.2s;
 }

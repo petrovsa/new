@@ -77,14 +77,13 @@ strong {
 
 a {
   color: currentColor;
-  text-decoration: none;
-  border-bottom: 1px dashed #000000;
+  text-decoration: underline;
 
   transition: all var(--animation-speed) ease;
 }
 
 a:hover {
-  border-bottom-color: transparent;
+  text-decoration: none;
 }
 
 table {
