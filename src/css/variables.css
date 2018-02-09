@@ -6,4 +6,8 @@
   --line-height-base: 26px;
 
   --color-gray: rgba(0, 0, 0, 0.7);
+  --color-heading: rgba(0, 0, 0, 0.85);
+  --color-lists: rgba(0, 0, 0, 0.85);
+
+  --animation-speed: 0.2s;
 }

@@ -33,3 +33,65 @@ img {
   clip: rect(0 0 0 0);
   overflow: hidden;
 }
+
+.ui {
+  padding: 40px;
+}
+
+h1 {
+  font-size: 42px;
+  line-height: 32px;
+  margin: 0;
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+h2 {
+  font-size: 26px;
+  line-height: 30px;
+  margin: 0;
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+h3 {
+  font-size: 20px;
+  line-height: 34px;
+  margin: 0;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+ul,
+ol {
+  color: var(--color-lists);
+}
+
+strong {
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+a {
+  color: currentColor;
+  text-decoration: none;
+  border-bottom: 1px dashed #000000;
+
+  transition: all var(--animation-speed) ease;
+}
+
+a:hover {
+  border-bottom-color: transparent;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table td {
+  border: 1px solid var(--color-heading);
+}
