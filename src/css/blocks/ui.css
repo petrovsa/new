@@ -1,0 +1,13 @@
+.ui {
+  padding: 40px;
+}
+
+.ui__logo {
+  padding: 20px;
+  background-color: var(--color-main-bg);
+  margin-bottom: 20px;
+}
+
+.ui__logo--white {
+  background-color: transparent;
+}
