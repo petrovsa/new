@@ -2,12 +2,12 @@
   padding: 40px;
 }
 
-.ui__logo {
+.ui__block {
   padding: 20px;
   background-color: var(--color-main-bg);
   margin-bottom: 20px;
 }
 
-.ui__logo--white {
+.ui__block--white {
   background-color: transparent;
 }
