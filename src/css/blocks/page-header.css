@@ -2,3 +2,9 @@
   padding: 17px 0 17px;
   background-color: var(--color-main-bg);
 }
+
+.page-header__inner {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+}
