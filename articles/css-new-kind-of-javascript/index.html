@@ -1,0 +1,112 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="generator" content="Gatsby 2.0.1"/><title data-react-helmet="true">Веб-стандарты</title><meta data-react-helmet="true" name="description" content="Сообщество разработчиков «Веб-стандарты»"/><meta data-react-helmet="true" name="keywords" content="web standards"/><link as="script" rel="preload" href="/0-152a6e34a5c4bf7cd8a5.js"/><link as="script" rel="preload" href="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"/><link as="script" rel="preload" href="/app-fdf6317c57abdf654ada.js"/><link as="script" rel="preload" href="/webpack-runtime-1400fd0a68f967e222fb.js"/><link rel="preload" href="/static/d/839/path---articles-css-new-kind-of-javascript-d-44-cff-icH7PbL0GmTsT0sJF1OpayItPmg.json" as="fetch" crossOrigin="use-credentials"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><header class="header"><h1>Веб-стандарты</h1></header><main><h1>CSS: новый вид JavaScript</h1><time>TODO</time><div><h1>CSS: новый вид JavaScript</h1>
+<p>Перевод «CSS: A New Kind Of JavaScript» Хейдона Пикеринга.</p>
+<p>Те из вас, кто знаком с веб-платформой, наверняка наслышаны и о двух дополнительных технологиях: <strong>HTML</strong> для структуризации документов и <strong>JavaScript</strong> для интерактивности и стилизации.</p>
+<p>Сколько мы себя помним, стилизация документов (то есть, влияние на их внешний вид) всегда производилась с помощью JavaScript-свойства style, доступного на каждом поддерживаемом DOM-узле.</p>
+<pre><code>node.style.color = 'red';
+</code></pre>
+<p>До изобретения этого API для стилизации авторам HTML приходилось писать атрибуты style вручную прямо в DOM, что затрудняло процесс редактирования.</p>
+<p>Используя выборку узлов по селектору из JS, мы можем стилизовать несколько элементов одновременно. В примере ниже текст во всех p стилизован красным цветом.</p>
+<pre><code>const nodes = document.querySelectorAll('p');
+Array.prototype.forEach.call(nodes, node => {
+  node.style.color = 'red';
+});
+</code></pre>
+<p>Отличная возможность выборки по селектору — обращение к нескольким элементам, перечисленным в списке через запятую.</p>
+<pre><code>const nodes = document.querySelectorAll('p, li, dd');
+</code></pre>
+<p>Гораздо менее удобно применять несколько стилей к одному узлу. Такой подход быстро становится слишком многословным:</p>
+<pre><code>node.style.color = 'red';
+node.style.backgroundColor = 'black';
+node.style.padding = '1rem';
+// и т.д.
+</code></pre>
+<p>Единственная стандартная альтернатива — использовать свойство cssText:</p>
+<pre><code>node.style.cssText = 'color: red; background-color: black; padding: 1rem;';
+</code></pre>
+<p>Управлять несколькими стилями в одной строке проблематично. В будущем будет сложно обновлять, удалять или заменять отдельные стили.</p>
+<p>Для этого авторы придумали способы управления информацией о стилях с помощью объектов, часто при помощи прототипа интерфейса Element.</p>
+<pre><code>Element.prototype.styles = function(attrs) {
+  Object.keys(attrs).forEach(attr => {
+    this.style[attr] = attrs[attr];
+  });
+}
+</code></pre>
+<p>Теперь стили к узлу можно добавлять вот так:</p>
+<pre><code>node.styles({
+  'color': 'red',
+  'backgroundColor': 'black',
+  'padding': '1rem'
+});
+</code></pre>
+<p>Использование подобного подхода приобрело <em>довольно большую</em> популярность в приложениях и их жизненных циклах. Однако это привело к печально известной проблеме—непониманию, где всё это хранить и как явно отделить стили от интерактивной части, ещё одной области ответственности JavaScript.</p>
+<p>А есть и другая, более фундаментальная проблема: эти стили не реактивны. К примеру, у меня есть некоторые стили для неактивных кнопок:</p>
+<pre><code>const disableds = document.querySelectorAll('[disabled]');
+
+Array.prototype.forEach.call(disableds, disabled => {
+  disabled.styles({
+  'opacity': '0.5',
+  'cursor': 'not-allowed'
+});
+</code></pre>
+<p>Эти стили применяются только к неактивным кнопкам, которые уже есть в DOM. Любые кнопки, добавленные в DOM или, что более вероятно, любые кнопки, которые приобретут свойство или атрибут disabled, не получат автоматически подходящую стилизацию.</p>
+<pre><code>button.disabled = true;
+button.style // ничего нового
+</code></pre>
+<p>Можно, конечно, слушать изменение атрибутов и реагировать на него с помощью mutationObserver:</p>
+<pre><code>const button = document.querySelector('button');
+
+var config = { attributes: true }
+
+var callback = function(mutationsList) {
+  for(var mutation of mutationsList) {
+    if (mutation.type == 'attributes') {
+      if (button.disabled) { 
+        button.styles({
+          'opacity': '0.5',
+          'cursor': 'not-allowed'
+        });
+      }
+    }
+  }
+}
+
+var observer = new MutationObserver(callback);
+
+observer.observe(button, config);
+</code></pre>
+<p>Думаю, что все согласятся, что это—<em>довольно много</em> кода, с учётом того, что он всего лишь заставляет один экземпляр элемента одного типа реагировать на изменение единственного атрибута. Также это меняет стилизацию только в одном направлении: нам бы пришлось обрабатывать отмену стилей при удалении свойства disabled. Это не так уж и просто, учитывая, что мы не знаем изначальных значений свойств opacity или cursor.</p>
+<p>Как бы я ни любил JavaScript, я не думаю, что он хорошо спроектирован для задач стилизации. В конце концов, это процедурный и событийный язык, тогда как стили — это то, что у вас либо есть, либо нет.</p>
+<p>Мы тратим слишком много времени впустую, когда пишем и поддерживаем стили с помощью JavaScript. Пришло время это менять. Поэтому я с большим удовольствием представляю вам новый стандарт, который называется CSS.</p>
+<h2>CSS</h2>
+<p>CSS — это декларативное подмножество JavaScript, оптимизированное для задач стилизации. CSS-файл имеет расширение .css и, что важно, парсится независимо от стандартных JS-файлов. С помощью CSS наконец-то стало возможно отделить стили от поведения. Вы можете брендировать своё приложение, не трогая бизнес-логику!</p>
+<h3>Синтаксический сахар</h3>
+<p>Первое, что вы заметите — это более чистый синтаксис, фанаты CoffeeScript оценят:</p>
+<pre><code>[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+</code></pre>
+<p>Структура, похожая на объектную, сохраняется, но теперь вам не нужно явно вызывать querySelectorAll для перебора DOM-узлов. Вместо этого перебор происходит внутри, и это, конечно же, производительнее.</p>
+<p>Пример выше автоматически применяется ко всем DOM-узлам с атрибутом disabled. Более того, все <em>новые</em> кнопки с атрибутом disabled автоматически приобретут связанные стили. Реактивность из коробки!</p>
+<h3>Каскад</h3>
+<p>CSS расшифровывается как <strong>каскадные таблицы стилей</strong>. Каскадность здесь, пожалуй, самая лучшая особенность. Взгляните на следующий CSS:</p>
+<pre><code>button {
+  background-color: blue;
+  cursor: pointer;
+}
+
+[disabled] {
+  cursor: not-allowed;
+}
+</code></pre>
+<p>Стили для блока [disabled] идут после блока button в стилях. Любые стили, описанные в блоке [disabled] с такими же ключами (именами свойств), что и в предшествующем button, будут перезаписаны. Самое замечательное заключается в том, что добавление атрибута или свойства disabled кнопке обновит только соответствующие стили. В примере выше свойство cursor обновится, но background-color останется тем же. Своего рода система фильтрации.</p>
+<p>Ко всему прочему, если атрибут или свойство disabled удалено, стили по умолчанию будут автоматически возвращены — ведь узел теперь соответствует блоку button выше по каскаду. Не нужно «вспоминать», какие стили и при каких условиях были применены ранее.</p>
+<h3>Устойчивость</h3>
+<p>При стилизации с помощью JavaScript любое неизвестное свойство или синтаксическая ошибка остановят парсинг скрипта. Все последующие стили или поведение будут отброшены целиком и всё ваше приложение просто рухнет.</p>
+<p>CSS гораздо надёжнее. В большинстве случаев любое неизвестное свойство или синтаксическая ошибка приведут только к тому, что только декларация (пара свойство: значение) с ошибкой будет отброшена.</p>
+<p>Эта инновация учитывает, что разные браузеры поддерживают разные свойства стилизации, и что отдельные стили не критичны для всей задачи. Устойчивость CSS значит, что больше пользователей получат доступ к функционирующему интерфейсу.</p>
+<h2>Заключение</h2>
+<p>Явный признак того, что технология не подходит для определённых целей—если для обхода сложностей нам приходится сильно полагаться на трюки и лучшие практики. Другой признак — насколько много кода нам приходится писать, чтобы сделать простые вещи. Когда речь заходит про стилизацию, JavaScript — как раз та самая неподходящая технология.</p>
+<p>CSS решает проблемы JavaScript со стилизацией, причём элегантно. Вопрос в том, готовы ли вы принять изменения или вы завязли в неудачной методологии?</p>
+<p>Больше информации про CSS и советы для быстрого старта <a href="https://en.wikipedia.org/wiki/Campus_SuperStar">вы найдете здесь</a>.</p>
+<p><em>Перевод <a href="https://medium.com/@pepelsbey">Вадима Макеева</a>, редактура <a href="https://medium.com/@tachisis">Ольги Алексашенко</a> и <a href="https://medium.com/@amel_true">Андрея Мелихова</a>. Переведено с разрешения автора.</em></p></div></main><footer class="footer"><p>2018 © Веб-стандарты</p></footer></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.page={"componentChunkName":"component---src-templates-article-jsx","jsonName":"articles-css-new-kind-of-javascript-d44","path":"/articles/css-new-kind-of-javascript/"};window.dataPath="839/path---articles-css-new-kind-of-javascript-d-44-cff-icH7PbL0GmTsT0sJF1OpayItPmg";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-fdf6317c57abdf654ada.js"],"component---src-templates-article-list-jsx":["/component---src-templates-article-list-jsx-d6fdd15edf4f8b89c17b.js"],"component---src-templates-article-jsx":["/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"],"component---src-pages-404-jsx":["/component---src-pages-404-jsx-a85f47ff49f987715412.js"],"component---src-pages-events-jsx":["/component---src-pages-events-jsx-4f883960193822a95f04.js"],"component---src-pages-index-jsx":["/component---src-pages-index-jsx-6d406cab1d4cc5f63755.js"]};/*]]>*/</script><script src="/webpack-runtime-1400fd0a68f967e222fb.js" async=""></script><script src="/app-fdf6317c57abdf654ada.js" async=""></script><script src="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js" async=""></script><script src="/0-152a6e34a5c4bf7cd8a5.js" async=""></script></body></html>

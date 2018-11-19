@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="generator" content="Gatsby 2.0.1"/><title data-react-helmet="true">Веб-стандарты</title><meta data-react-helmet="true" name="description" content="Сообщество разработчиков «Веб-стандарты»"/><meta data-react-helmet="true" name="keywords" content="web standards"/><link as="script" rel="preload" href="/0-152a6e34a5c4bf7cd8a5.js"/><link as="script" rel="preload" href="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"/><link as="script" rel="preload" href="/app-fdf6317c57abdf654ada.js"/><link as="script" rel="preload" href="/webpack-runtime-1400fd0a68f967e222fb.js"/><link rel="preload" href="/static/d/382/path---articles-cite-blockquote-reloaded-70-d-ab2-vY73D8IOL5xAoSp3ZLfVbG9pRl4.json" as="fetch" crossOrigin="use-credentials"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><header class="header"><h1>Веб-стандарты</h1></header><main><h1>Сite и blockquote: перезагрузка</h1><time>11 ноября 2013</time><div><h1>Сite и blockquote: перезагрузка</h1>
+<p><a href="http://blog.paciellogroup.com/author/admin/">Стив Фолкнер</a> 11 ноября 2013</p>
+<p>Недавно в <a href="http://www.w3.org/html/wg/drafts/html/master/">спецификации HTML</a> было изменено определение элементов <code>&#x3C;blockquote></code> и <code>&#x3C;cite></code>. В статье рассказывается, что это значит для разработчиков.</p>
+<h2>Изменения в определении <code>&#x3C;blockquote></code></h2>
+<blockquote>
+<p>Элемент <code>&#x3C;blockquote></code> представляет контент, являющийся цитатой из другого источника, <strong>возможно</strong>, включающим упоминание этого источника, которое <strong>должно быть</strong> размещено внутри элементов <code>&#x3C;footer></code> или <code>&#x3C;cite></code>, и, <strong>возможно</strong>, содержащий примечания и сокращения.
+Контент внутри элемента <code>&#x3C;blockquote></code>, за исключением отсылки к источнику и изменений в тексте, <strong>должен быть</strong> точной цитатой из другого источника, адрес которого, если таковой имеется, <strong>может быть</strong> указан в атрибуте <code>cite</code>.
+<a href="http://www.w3.org/html/wg/drafts/html/master/grouping-content.html#the-blockquote-element">4.51 the Blockquote element</a>, Роберт Бержон и соавторы, 2013</p>
+</blockquote>
+<p>Выделение в цитате авторское, прим. редактора.</p>
+<h3>Что изменения в <code>&#x3C;blockquote></code> значат для разработчиков</h3>
+<p><a href="http://www.w3.org/TR/html5/">Прежде в HTML5</a> не было принято включать упоминание источника внутрь элемента <code>&#x3C;blockquote></code>. Сейчас ситуация изменилась, при условии, что упоминание источника находится внутри элемента <code>&#x3C;cite></code> или <code>&#x3C;footer></code>. Упоминание источника внутри цитаты — распространенный кейс (данные показывают, что приблизительно в <a href="http://lists.w3.org/Archives/Public/public-html/2013Aug/0100.html">60% случаев <code>&#x3C;blockquote></code></a> содержит упоминание источника), изменения в <a href="http://www.w3.org/html/wg/drafts/html/master/grouping-content.html#the-blockquote-element">спецификации HTML</a> подтверждают это и обеспечивают семантический механизм дифференциации контента цитаты от упоминания ее источника.</p>
+<p>Пример использования элементов <code>&#x3C;footer></code> и <code>&#x3C;cite></code> внутри <code>&#x3C;blockquote></code>:</p>
+<pre><code>&#x3C;blockquote>
+    &#x3C;p>
+        As my fellow HTML5 Doctor, Oli Studholme has showed,
+        people seldom quote exactly – so sacrosanctity of the quoted
+        text isn’t a useful ideal – and in print etc, citations almost
+        always appear as part of the quotation –
+        it’s highly conventional.
+    &#x3C;/p>
+    &#x3C;footer>
+        — &#x3C;cite>&#x3C;a href="http://brucelawson.co.uk/2013/on-citing-
+        quotations-again/">Bruce Lawson&#x3C;/a>&#x3C;/cite>
+    &#x3C;/footer>
+&#x3C;/blockquote>
+</code></pre>
+<p>Пример выше показывает, что авторы спецификации, вместо того, чтобы следовать <a href="http://www.w3.org/TR/html-design-principles/#priority-of-constituencies">теоретической чистоте</a>, которая, в данном случае, не имеет практического смысла, предпочли изменить определение, чтобы <a href="http://www.w3.org/TR/html-design-principles/#solve-real-problems">решить реальную проблему</a> используя существующие возможности HTML, а не <a href="http://www.w3.org/TR/html-design-principles/#do-not-reinvent-the-wheel">изобретать колесо</a>.</p>
+<h3>Редкий случай</h3>
+<p>Один из аргументов против использования cite и footer внутри blockquote для указания источника цитат состоит в том, что цитируемый контент сам по себе может содержать цитаты и ссылки на источники. Мы можем отбросить этот аргумент по той причине, что такие случаи крайне редки. Отказ от использования <code>&#x3C;cite></code> и <code>&#x3C;footer></code> ради такого редкого кейса — другой пример <a href="http://ln.hixie.ch/?start=1154950069&#x26;count=1">теоретической чистоты</a>, которая не будет служить практическим целям.</p>
+<p>Но если у вас возник такой случай, в настоящее время <a href="http://www.w3.org/html/wg/drafts/html/master/grouping-content.html#the-blockquote-element">спецификация HTML</a> предлагает вам просто закомментировать указание источника в коде цитаты. (Вопрос все еще <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=23175">открыт</a> и этот совет может измениться):</p>
+<p><em>(Добавлено 6.11.13, прим. редактора.)</em> В ответ на отзывы, мы решили изменить наше предложение для спецификации так, чтобы использовать атрибут <code>class</code> (который <a href="http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#extensibility">может использоваться для расширения</a>) элемента <code>&#x3C;cite></code> для обозначения, что это часть источника цитаты.</p>
+<pre><code>&#x3C;blockquote>
+    &#x3C;p>
+        My favorite book is
+        &#x3C;cite class="from-quote">At Swim-Two-Birds&#x3C;/cite>
+    &#x3C;/p>
+    &#x3C;footer>
+        — &#x3C;cite>Mike[tm]Smith&#x3C;/cite>
+    &#x3C;/footer>
+&#x3C;/blockquote>
+</code></pre>
+<h2>Изменения в определении <code>&#x3C;cite></code></h2>
+<blockquote>
+<p><a href="http://www.w3.org/html/wg/drafts/html/master/text-level-semantics.html#the-cite-element">Элемент <code>&#x3C;cite></code></a> <a href="http://www.w3.org/html/wg/drafts/html/master/dom.html#represents">представляет</a> отсылку к оригинальной работе. Он <strong>должен</strong> включать название работы или имя автора (персоналию, группу лиц или организацию), или ссылку, которые <strong>могут быть</strong> в представлены сокращенном виде в соответствии с соглашениями, принятыми при цитировании.
+<a href="http://www.w3.org/html/wg/drafts/html/master/text-level-semantics.html#the-cite-element">4.51 the Cite element</a>, Роберт Бержон и соавторы, 2013</p>
+</blockquote>
+<h3>Что изменения в <code>&#x3C;cite></code> значат для разработчиков</h3>
+<p><a href="http://www.w3.org/TR/html5/">Ранее в HTML5</a> не было принято упоминать автора источника по имени или заключать другую информацию об источнике в элемент <code>&#x3C;cite></code>. Применение <code>&#x3C;cite></code> было зарезервировано (теоретически) для названия источника. Это было попыткой пересмотреть определение элемента, <a href="http://www.w3.org/TR/REC-html40/">не менявшееся 14 лет</a>.</p>
+<p>Разработчики выступали против изменений в определении:</p>
+<blockquote>
+<p>Присоединяйтесь к кампании гражданского неповиновения против излишне ограничительных, обратно-несовместимых изменений элемента <code>&#x3C;cite></code>. Начните использовать HTML5, но начните использовать его разумно. Давайте посмотрим, как плохой совет канет в лету.
+<a href="http://24ways.org/2009/incite-a-riot/">Джереми Кит, 2009</a></p>
+</blockquote>
+<p>Они также приводили <a href="http://wiki.whatwg.org/wiki/Cite_element">абстрактные</a> и <a href="http://oli.jp/example/blockquote-metadata/">реальные примеры</a> указания источника. Сейчас, в результате <a href="https://dl.dropboxusercontent.com/u/377471/cite1.html">исследований</a>, <a href="http://lists.w3.org/Archives/Public/public-html/2013Aug/0100.html">анализа данных</a> и <a href="http://www.w3.org/Search/Mail/Public/search?keywords=%3Cblockquote%3E+%3Ccite%3E&#x26;hdr-1-name=subject&#x26;hdr-1-query=&#x26;index-grp=Public_FULL&#x26;index-type=t&#x26;type-index=public-html">дискуссий</a>, разработчики могут вновь использовать <code>&#x3C;cite></code> для того, чтобы разными способами сослаться на источник: например, указать <q>название работы, имя автора или ссылку на источник</q>. Мы теряем в теоретической чистоте, но выигрываем в удобстве использования:</p>
+<blockquote>
+<p>Сколько раз в день тег <code>&#x3C;cite></code>, содержащий гиперссылку, опубликуется на веб-страницах? По меньшей мере, 70 миллиардов раз, т.е. примерно в 10 ссылках на странице результатов поиска Google.
+Одна из причин, почему элемент <code>&#x3C;cite></code> теперь можно использовать для гиперссылок (даже не упоминая про идентичную ситуацию с Bing).
+Стив Фолкнер, <a href="https://twitter.com/stevefaulkner/statuses/392645777874370560">22 октября 2013</a></p>
+</blockquote>
+<h3>Что вы думаете?</h3>
+<p>Пожалуйста, прочитайте определения в спецификации HTML 5.1, нам интересно ваше мнение!</p>
+<ul>
+<li><a href="http://www.w3.org/html/wg/drafts/html/master/text-level-semantics.html#the-cite-element">4.6.6 Элемент <code>&#x3C;cite></code></a></li>
+<li><a href="http://www.w3.org/html/wg/drafts/html/master/grouping-content.html#the-blockquote-element">4.5.4 Элемент <code>&#x3C;blockquote></code></a></li>
+</ul>
+<p>Огромное спасибо «доктору» Оли, чье <a href="http://oli.jp/2011/blockquote/">исследование</a> помогло подготовить изменения, произошедшие с элементами <code>&#x3C;cite></code> и <code>&#x3C;blockquote></code>. И «доктору» Брюсу за то, что <a href="http://www.brucelawson.co.uk/2013/on-citing-quotations-again/">настаивал</a> на своем праве цитировать свою маму.</p>
+<p>Перевод оригинальной статьи «<a href="http://html5doctor.com/cite-and-blockquote-reloaded/">Cite and blockquote — reloaded</a>» Стива Фолкнера (Steve Faulkner), опубликованной на сайте <a href="http://html5doctor.com/">HTML5Doctor.com</a>.</p>
+<p>Перевод выполнили: <a href="http://twitter.com/n_snork">Наташа Арефьева</a> и <a href="https://twitter.com/yoksel">Юлия Бухвалова</a>, редактура <a href="http://pepelsbey.net">Вадима Макеева</a> и <a href="http://engel-t.moikrug.ru">Ольги Алексашенко</a>.</p></div></main><footer class="footer"><p>2018 © Веб-стандарты</p></footer></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.page={"componentChunkName":"component---src-templates-article-jsx","jsonName":"articles-cite-blockquote-reloaded-70d","path":"/articles/cite-blockquote-reloaded/"};window.dataPath="382/path---articles-cite-blockquote-reloaded-70-d-ab2-vY73D8IOL5xAoSp3ZLfVbG9pRl4";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-fdf6317c57abdf654ada.js"],"component---src-templates-article-list-jsx":["/component---src-templates-article-list-jsx-d6fdd15edf4f8b89c17b.js"],"component---src-templates-article-jsx":["/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"],"component---src-pages-404-jsx":["/component---src-pages-404-jsx-a85f47ff49f987715412.js"],"component---src-pages-events-jsx":["/component---src-pages-events-jsx-4f883960193822a95f04.js"],"component---src-pages-index-jsx":["/component---src-pages-index-jsx-6d406cab1d4cc5f63755.js"]};/*]]>*/</script><script src="/webpack-runtime-1400fd0a68f967e222fb.js" async=""></script><script src="/app-fdf6317c57abdf654ada.js" async=""></script><script src="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js" async=""></script><script src="/0-152a6e34a5c4bf7cd8a5.js" async=""></script></body></html>

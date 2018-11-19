@@ -1,0 +1,152 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="generator" content="Gatsby 2.0.1"/><title data-react-helmet="true">Веб-стандарты</title><meta data-react-helmet="true" name="description" content="Сообщество разработчиков «Веб-стандарты»"/><meta data-react-helmet="true" name="keywords" content="web standards"/><link as="script" rel="preload" href="/0-152a6e34a5c4bf7cd8a5.js"/><link as="script" rel="preload" href="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"/><link as="script" rel="preload" href="/app-fdf6317c57abdf654ada.js"/><link as="script" rel="preload" href="/webpack-runtime-1400fd0a68f967e222fb.js"/><link rel="preload" href="/static/d/936/path---articles-contenteditable-fdb-4eb-3iVj4veujjyyYKgfHJ1t5ntXFQw.json" as="fetch" crossOrigin="use-credentials"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><header class="header"><h1>Веб-стандарты</h1></header><main><h1>Атрибут contenteditable</h1><time>9 марта 2012</time><div><h1>Атрибут contenteditable</h1>
+<p><a href="http://jackosborne.co.uk/">Джек Осборн</a> 9 марта 2012</p>
+<p>Мы уже давно используем различные технологии для редактирования и хранения текста в браузере. С атрибутом <code>contenteditable</code> это становится намного проще. В этой статье я расскажу для чего этот атрибут, как он работает и куда нам двигаться дальше.</p>
+<h2>Основы</h2>
+<p>Давайте обратимся к спецификации:</p>
+<blockquote>
+<p>Атрибут <code>contenteditable</code> обладает фиксированным набором значений, он может быть пустой строкой, <code>true</code> или <code>false</code>. Пустая строка или <code>true</code> обозначают, что элемент доступен для редактирования. <code>false</code> обозначает, что элемент недоступен для редактирования. Есть еще третье состояние — <code>inherit</code>, это значение атрибута по умолчанию и оно означает, что значение наследуется от родительского элемента.
+<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/editing.html#contenteditable">WHATWG</a></p>
+</blockquote>
+<p>В основном, атрибут <code>contenteditable</code> должен был обеспечивать работу WYSIWYG-редакторов. Скорее всего, вы встречали его в инструментах подобных Symphony или на cайтах вроде Flickr, где вы начинаете редактировать материалы, просто кликнув в определенную область.</p>
+<p>Как упоминалось выше, <code>contenteditable</code> может быть в трёх возможных состояниях:</p>
+<ol>
+<li><code>contenteditable=""</code> или <code>contenteditable="true"</code> означает, что элемент доступен для редактирования</li>
+<li><code>contenteditable="false"</code> означает, что элемент недоступен для редактирования</li>
+<li><code>contenteditable="inherit"</code> означает, что элемент доступен для редактирования в случае, если его непосредственный родитель доступен для редактирования. Это значение атрибута по умолчанию.</li>
+</ol>
+<p>Когда вы добавляете элементу атрибут <code>contenteditable</code>, браузер делает его доступным для редактирования. Кроме того, все потомки этого элемента также становятся доступны для редактирования, если атрибут <code>contenteditable</code> у них явно не установлен в <code>false</code>.</p>
+<h2>Пример кода</h2>
+<pre><code>&#x3C;div id="example-one" contenteditable="true">
+    &#x3C;style scoped>
+        #example-one {
+            margin:12px 0;
+        }
+        #example-one[contenteditable="true"] {
+            padding:10px;
+            outline:3px dashed #CCC;
+        }
+        #example-one[contenteditable="true"]:hover {
+            outline:3px dashed #2B8BAD;
+        }
+    &#x3C;/style>
+    &#x3C;p>Всё что находится в этом блоке, доступно для редактирования в браузерах, поддерживающих &#x3C;code>HTML5&#x3C;/code>. Давайте, попробуйте: кликните для начала редактирования.&#x3C;/p>
+&#x3C;/div>
+</code></pre>
+<h2>Демонстрация</h2>
+<p>Вот два простых примера, показывающие работу <code>contenteditable</code>:</p>
+<h3>Пример №1</h3>
+<div id="example-one" contenteditable="true">
+    <style>
+        #example-one {
+            margin: 12px 0;
+            font-family: Consolas, Monaco, monospace;
+        }
+<pre><code>    #example-one[contenteditable="true"] {
+        padding: 10px;
+        outline: 3px dashed #cccccc;
+    }
+    
+    #example-one[contenteditable="true"]:hover {
+        background: #e4f3f9;
+        outline:3px dashed #2b8bad;
+    }
+&#x3C;/style>
+Всё, что находится в этом блоке, доступно для редактирования в браузерах, поддерживающих HTML5. Давайте, попробуйте: кликните для начала редактирования.
+</code></pre>
+</div>
+<p>Редактирование текста.</p>
+<p>Я использовал CSS для создания оформления, показывающего, что текст доступен для редактирования. Обратите внимание на ориентированное на будущее использование <code>&#x3C;style scoped></code>, которое описано в моей <a href="http://html5doctor.com/the-scoped-attribute/">предыдущей статье</a>.</p>
+<h3>Пример №2</h3>
+<p><a href="http://twitter.com/chriscoyier">Крис Койер</a> рассказывал на CSS-Tricks, что вы можете позволить вашим пользователям <a href="http://css-tricks.com/show-and-edit-style-element/">редактировать CSS в реальном времени</a>, так как <code>&#x3C;style></code> элемент имеет <code>display:none</code> по умолчанию, но ведь значение можно изменить на <code>block</code>.</p>
+<p>Попробуйте отредактировать CSS, приведенный ниже:</p>
+<div id="example-two" contenteditable="true">
+    <style contenteditable="true">
+        #example-two {
+            margin: 12px 0;
+            font-family: Consolas, Monaco, monospace;
+        }
+        
+        #example-two style {
+            display: block;
+            white-space: pre;
+        }
+        
+        #example-two[contenteditable="true"] {
+            padding: 10px;
+            outline: 3px dashed #cccccc;
+        }
+        
+        #example-two[contenteditable="true"]:hover{
+            background: #e4f3f9;
+            outline: 3px dashed #2B8BAD;
+        }
+    </style>
+</div>
+<p>Редактирование таблицы стилей.</p>
+<h2>Поддержка браузерами</h2>
+<p>Поддержка атрибута <code>contenteditable</code> браузерами на удивление хороша:</p>
+<table>
+<thead>
+<tr>
+<th>Браузер</th>
+<th>Версия</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chrome</td>
+<td>4.0+</td>
+</tr>
+<tr>
+<td>Safari</td>
+<td>3.1+</td>
+</tr>
+<tr>
+<td>Mobile Safari</td>
+<td>5.0+</td>
+</tr>
+<tr>
+<td>Firefox</td>
+<td>3.5+</td>
+</tr>
+<tr>
+<td>Opera</td>
+<td>9.0+</td>
+</tr>
+<tr>
+<td>Opera Mini/Mobile</td>
+<td>Нет</td>
+</tr>
+<tr>
+<td>Internet Explorer</td>
+<td>5.5+</td>
+</tr>
+<tr>
+<td>Android</td>
+<td>3.0+</td>
+</tr>
+</tbody>
+</table>
+<p>Поддержка браузерами свойства <code>contenteditable</code>.</p>
+<p>Должен отметить, что появлением и отличной поддержкой атрибута мы обязаны IE 5.5, хотя на самом деле ранний вариант <code>contenteditable</code> был <a href="http://msdn.microsoft.com/en-us/library/ms537837(VS.85).aspx">разработан и внедрен Microsoft в июле 2000 года</a>.</p>
+<p>Более подробную таблицу совместимости можно увидеть тут: <a href="http://caniuse.com/contenteditable">When Can I Use</a>.</p>
+<h2>Сохранение изменений</h2>
+<p>Для написания этого раздела я обратился за помощью к доктору Реми, так как он гораздо более сведущ во всём, что касается хранения <del>данных</del> всего на свете.</p>
+<blockquote>
+<p>В зависимости от сложности блока ваш код может отлавливать нажатие <kbd>Enter</kbd> (код 13) для сохранения изменения и <kbd>Esc</kbd> (код 27) для их отмены.</p>
+<p>Когда пользователь нажимает <kbd>Enter</kbd> (предполагаем, что редактируем однострочные данные), получаем <code>innerHTML</code> редактируемого блока и посылаем AJAX-запрос с изменениями на сервер.</p>
+<p>Простой пример можно увидеть тут: <a href="http://jsbin.com/owavu3">Сохранение данных из элемента с <code>сontenteditable</code> при помощи AJAX</a>.</p>
+<p><a href="http://remysharp.com/">Реми Шарп</a></p>
+</blockquote>
+<h2>Заключение</h2>
+<p>В своих статьях я неоднократно упоминал этот подход: спецификация наконец-то сделала официальным то, что внедрено в браузерах много лет назад.</p>
+<p>Атрибут <code>contenteditable</code> — один из самых малоизвестных, но могу поспорить, что вы будете использовать его чаще, чем думаете.</p>
+<p>Представьте себе возможность редактирования блока текста после простого клика на него: делать быстрые правки в статьях, редактировать комментарии или даже создавать не завязанные на серверную часть таблицы в веб-приложениях.</p>
+<p>Если у вас есть идеи, как использовать этот атрибут — расскажите нам об этом в комментариях.</p>
+<h2>Читать дальше</h2>
+<ul>
+<li><a href="http://blog.whatwg.org/the-road-to-html-5-contenteditable#what">Что такое contenteditable?</a></li>
+<li><a href="http://css-tricks.com/expanding-images-html5/">Разворачиваем изображения с помощью HTML5 contenteditable</a></li>
+</ul>
+<p>Перевод оригинальной статьи «<a href="http://html5doctor.com/the-contenteditable-attribute/">The contenteditable attribute</a>» <a href="http://jackosborne.co.uk/">Джека Осборна</a> (Jack Osborne), опубликованной на сайте «<a href="http://html5doctor.com/">HTML5 Doctor</a>».</p>
+<p>Перевод выполнил <a href="http://twitter.com/silentimp">Антон Немцев</a> (SilentImp).</p></div></main><footer class="footer"><p>2018 © Веб-стандарты</p></footer></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.page={"componentChunkName":"component---src-templates-article-jsx","jsonName":"articles-contenteditable-fdb","path":"/articles/contenteditable/"};window.dataPath="936/path---articles-contenteditable-fdb-4eb-3iVj4veujjyyYKgfHJ1t5ntXFQw";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-fdf6317c57abdf654ada.js"],"component---src-templates-article-list-jsx":["/component---src-templates-article-list-jsx-d6fdd15edf4f8b89c17b.js"],"component---src-templates-article-jsx":["/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"],"component---src-pages-404-jsx":["/component---src-pages-404-jsx-a85f47ff49f987715412.js"],"component---src-pages-events-jsx":["/component---src-pages-events-jsx-4f883960193822a95f04.js"],"component---src-pages-index-jsx":["/component---src-pages-index-jsx-6d406cab1d4cc5f63755.js"]};/*]]>*/</script><script src="/webpack-runtime-1400fd0a68f967e222fb.js" async=""></script><script src="/app-fdf6317c57abdf654ada.js" async=""></script><script src="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js" async=""></script><script src="/0-152a6e34a5c4bf7cd8a5.js" async=""></script></body></html>

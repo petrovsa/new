@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="generator" content="Gatsby 2.0.1"/><title data-react-helmet="true">Веб-стандарты</title><meta data-react-helmet="true" name="description" content="Сообщество разработчиков «Веб-стандарты»"/><meta data-react-helmet="true" name="keywords" content="web standards"/><link as="script" rel="preload" href="/0-152a6e34a5c4bf7cd8a5.js"/><link as="script" rel="preload" href="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"/><link as="script" rel="preload" href="/app-fdf6317c57abdf654ada.js"/><link as="script" rel="preload" href="/webpack-runtime-1400fd0a68f967e222fb.js"/><link rel="preload" href="/static/d/413/path---articles-critical-and-progressive-css-74-f-992-NldwlAil7HIPzqTKubonvMMH36c.json" as="fetch" crossOrigin="use-credentials"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><header class="header"><h1>Веб-стандарты</h1></header><main><h1>Критический CSS + прогрессивный CSS = ?</h1><time>TODO</time><div><h1>Критический CSS + прогрессивный CSS = ?</h1>
+<p>Однажды я прочел статью на Хабре о результатах, полученных при проведении ребятами из Google различных тестов. Они выяснили, что в большинстве сценариев встраивание стилей в HTML приводит к более быстрой загрузке страницы, чем подключение стилей одним файлом. Тем не менее, такой трюк я не применял, за одним исключением: в одном проекте, в котором я принимал участие, было реализовано встраивание стилей на страницу сгенерированного лендинга, что действительно немного ускоряло загрузку. При разработке обычных сайтов заморачиваться с загрузкой стилей не обязательно, но есть и такие проекты, где необходимо показать страницу пользователю как можно скорее, ведь это может улучшить аудиторные показатели. Для этого существуют, как минимум, две практики: «критический CSS» и «прогрессивный CSS».</p>
+<h2>Критический CSS</h2>
+<p>Основной принцип в обеих практиках заключается в том, что стили загружаются постепенно, а не все сразу. Критический CSS — это стили, которые необходимы для отрисовки первой видимой части страницы. Выделить такие стили автоматически вы можете с помощью пакета <a href="https://github.com/filamentgroup/criticalCSS">CriticalCSS</a>. Для моментальной отрисовки критический CSS встраивают в HTML, все остальные стили загружаются отдельным файлом асинхронно.</p>
+<p><img src="https://cdn-images-1.medium.com/max/2000/1*cf_FIrLnoSWAo_n65Cb3BA.gif" alt="*Обычная загрузка в head*"><strong>Обычная загрузка в head</strong></p>
+<p><img src="https://cdn-images-1.medium.com/max/2000/1*FNMTHC_4hViET7UcChQ8zw.gif" alt="Critical CSS"><em>Critical CSS</em></p>
+<p>При отрисовке HTML, как только браузер встречает <script> или <link>, он останавливается и ждёт, пока JS- или CSS-файл загрузится, и только после этого идет дальше. При использовании <script> с атрибутами async и defer, мы можем попросить браузер загружать скрипт асинхронно, без блокировки рендеринга страницы, но у <link> таких атрибутов нет. Из этой ситуации нас спасёт функция <a href="https://github.com/filamentgroup/loadCSS">loadCSS</a> — её использование позволит вашей странице отрисоваться с критическим CSS и не ждать полной загрузки остальных стилей.</p>
+<pre><code>&#x3C;!DOCTYPE html>
+&#x3C;html>
+    &#x3C;head>
+        &#x3C;script>
+            // loadCSS.js
+        &#x3C;/script>
+        &#x3C;style>
+            /* Критические стили */
+            .article,
+            .comments,
+            .about,
+            .footer {
+                display: none;
+            }
+        &#x3C;/style>
+        &#x3C;script>
+            /* Остальные стили */
+            loadCSS('style.css');
+        &#x3C;/script>
+    &#x3C;/head>
+    &#x3C;body>
+        ...
+    &#x3C;/body>
+&#x3C;/html>
+</code></pre>
+<p>Как это работает? Если коротко, то эта функция создает <link rel="stylesheet"> с атрибутом media="only x". Таким образом, браузер загружает стили, при этом не блокируя рендеринг страницы. После того, как стили загружены, атрибуту задается значение media="all". В современных браузерах, поддерживающих rel="preload" для <link>, можно обойтись без loadCSS.</p>
+<pre><code>&#x3C;link rel="preload" href="/style.css"
+      as="style" onload="this.rel='stylesheet'">
+&#x3C;noscript>
+    &#x3C;link rel="stylesheet" href="style.css">
+&#x3C;/noscript>
+</code></pre>
+<p>С media="only x" такой трюк не сработает: разные браузеры загружают CSS по-разному, loadCSS учитывает все эти нюансы.</p>
+<h2>Прогрессивный CSS</h2>
+<p><img src="https://cdn-images-1.medium.com/max/2000/1*CmWVzKAJvO289yxtOJcQnw.gif"></p>
+<p>Прогрессивный CSS предполагает создание отдельного CSS-файла для каждой части страницы: перед каждой вставляется <link rel="stylesheet"> со стилем только этой части. Благодаря тому, что <link rel="stylesheet"> блокирует рендеринг до окончания загрузки стилей, страница будет загружаться последовательно по частях. В этом сценарии выгоднее всего использовать HTTP/2, он хорошо работает с одновременными запросами.</p>
+<pre><code>&#x3C;!DOCTYPE html>
+&#x3C;html>
+    &#x3C;head>
+    &#x3C;/head>
+    &#x3C;body>
+        &#x3C;link rel="stylesheet" href="header.css">
+        &#x3C;header class="header">...&#x3C;/header>
+
+        &#x3C;link rel="stylesheet" href="article.css">
+        &#x3C;main class="article">&#x3C;/main>
+
+        &#x3C;link rel="stylesheet" href="comments.css">
+        &#x3C;section class="comments">...&#x3C;/section>
+
+        &#x3C;link rel="stylesheet" href="about.css">
+        &#x3C;section class="about">&#x3C;/section>
+
+        &#x3C;link rel="stylesheet" href="footer.css">
+        &#x3C;footer class="footer">&#x3C;/footer>
+    &#x3C;/body>
+&#x3C;/html>
+</code></pre>
+<p>Пришла пора признаться, что прогрессивный CSS это скорее концепт, чем что-то применимое на практике: в <a href="https://html.spec.whatwg.org/multipage/semantics.html#the-link-element">спецификации HTML</a> никак не объяснено, как рендеринг страницы должен блокироваться загрузкой CSS и как должен вести себя <link rel="stylesheet"> в <body>, поэтому все браузеры обрабатывают эту ситуацию по-своему. Можно выделить два основных поведения браузеров:</p>
+<ol>
+<li>
+<p>Встретил <link rel="stylesheet">;</p>
+</li>
+<li>
+<p>Дождался загрузки;</p>
+</li>
+<li>
+<p>Рендерит дальше.</p>
+</li>
+</ol>
+<p>Или:</p>
+<ol>
+<li>
+<p>Встретил <link rel="stylesheet">;</p>
+</li>
+<li>
+<p>Дождался загрузки <strong>всех</strong> обнаруженных стилей;</p>
+</li>
+<li>
+<p>Рендерит дальше.</p>
+</li>
+</ol>
+<p>Подробнее про поведение каждого браузера можно <a href="https://jakearchibald.com/2016/link-in-body/#changes-to-chrome">почитать у Джейка Арчибальда</a>. На реальных проектах прогрессивный CSS в полной мере не применить, но сама концепция выглядит очень интересно.</p>
+<h2>Gulp в помощь</h2>
+<p>Чтобы с лёгкостью применять критический и прогрессивный CSS вместе во всех браузерах, я написал плагин <a href="https://www.npmjs.com/package/gulp-progressive-css">gulp-progressive-css</a>. Этот плагин обрабатывает HTML-файлы и добавляет возможность использовать атрибуты priority="critical", priority="queued" и priority="async" у элемента <link rel="stylesheet">.</p>
+<pre><code>&#x3C;!DOCTYPE html>
+&#x3C;html>
+    &#x3C;head>
+        &#x3C;link rel="stylesheet"
+              priority="async" href="/font.css">
+
+        &#x3C;link rel="stylesheet"
+              priority="critical" href="/header.css">
+
+        &#x3C;link rel="stylesheet"
+              priority="queued" href="/article.css">
+
+        &#x3C;link rel="stylesheet"
+              priority="queued" href="/comments.css">
+
+        &#x3C;link rel="stylesheet"
+              priority="queued" href="/about.css">
+
+        &#x3C;link rel="stylesheet"
+              priority="queued" href="/footer.css">
+    &#x3C;/head>
+    &#x3C;body>
+        &#x3C;header class="header">&#x3C;/header>
+        &#x3C;main class="article">&#x3C;/main>
+        &#x3C;section class="comments">&#x3C;/section>
+        &#x3C;section class="about">&#x3C;/section>
+        &#x3C;footer class="footer">&#x3C;/footer>
+    &#x3C;/body>
+&#x3C;/html>
+</code></pre>
+<p>Стили, подключенные с атрибутом priority="critical", будут встроены в HTML-файл, а стили с атрибутом priority="queued" или priority="async" будут загружены асинхронно с помощью функции importCSS. Это <a href="https://github.com/TrigenSoftware/import-css/blob/master/src/link-in-body-async.js">вариация функции</a> loadCSS, её особенность в том, что загрузка стилей начинатся одновременно, но стили с priority="queued" будут применяться в том порядке, в котором они были указаны в HTML-файле. Чтобы загрузка стилей работала одинаково во всех браузерах, подключение стилей переносится в конец <body>. Также добавляется <link rel="preload"> в <head> для каждого файла стилей, чтобы в браузерах, которые поддерживают rel="preload", загрузка начиналась еще при обработке <head>.</p>
+<pre><code>&#x3C;!DOCTYPE html>
+&#x3C;html>
+    &#x3C;head>
+        &#x3C;style>/* header.css */&#x3C;/style>
+        &#x3C;link rel="preload" as="style" href="font.css">
+        &#x3C;link rel="preload" as="style" href="article.css">
+        &#x3C;link rel="preload" as="style" href="comments.css">
+        &#x3C;link rel="preload" as="style" href="about.css">
+        &#x3C;link rel="preload" as="style" href="footer.css">
+        &#x3C;noscript>
+            &#x3C;link rel="stylesheet" href="font.css">
+            &#x3C;link rel="stylesheet" href="article.css">
+            &#x3C;link rel="stylesheet" href="comments.css">
+            &#x3C;link rel="stylesheet" href="about.css">
+            &#x3C;link rel="stylesheet" href="footer.css">
+        &#x3C;/noscript>
+    &#x3C;/head>
+    &#x3C;body>
+        &#x3C;header class="header">&#x3C;/header>
+        &#x3C;main class="article">&#x3C;/main>
+        &#x3C;section class="comments">&#x3C;/section>
+        &#x3C;section class="about">&#x3C;/section>
+        &#x3C;footer class="footer">&#x3C;/footer>
+        &#x3C;script>
+            importCSS('font.css', 0, true);
+            importCSS('article.css');
+            importCSS('comments.css');
+            importCSS('about.css');
+            importCSS('footer.css');
+        &#x3C;/script>
+    &#x3C;/body>
+&#x3C;/html>
+</code></pre>
+<h2>Результаты применения</h2>
+<p>Я решил взять один из лендингов, который однажды верстал, и на его примере продемонстрировать пользу применения асинхронной загрузки стилей.</p>
+<p>Тестируем изначальный вариант лендинга на <a href="https://developers.google.com/speed/pagespeed/insights">PageSpeed Insights</a>:</p>
+<p><img src="https://cdn-images-1.medium.com/max/2704/1*jd_lhPJSnP53YL9bT2tSIg.jpeg" alt="PageSpeed: 74 балла из 100."><em>PageSpeed: 74 балла из 100.</em></p>
+<p>По результатам тестирования видно, что стили шрифтов и основные стили блокируют рендеринг страницы. Применив прогрессивную загрузку на стили сайта, мы будем иметь те же 74 из 100 баллов, но если сделать загрузку шрифтов асинхронной, то результат уже совсем другой:</p>
+<p><img src="https://cdn-images-1.medium.com/max/2704/1*60RoxNGHPg14S7azV2A9hw.jpeg" alt="PageSpeed: 98 баллов из 100."><em>PageSpeed: 98 баллов из 100.</em></p>
+<p>При сравнении трёх вариантов страницы на <a href="https://www.webpagetest.org/">WebPageTest</a>:</p>
+<ol>
+<li>
+<p>Обычный;</p>
+</li>
+<li>
+<p>Прогрессивная загрузка;</p>
+</li>
+<li>
+<p>Прогрессивная загрузка и асинхронная загрузка шрифтов;</p>
+</li>
+</ol>
+<p>Можно увидеть, что второй вариант отображает первый кадр раньше, чем первый, при этом третий вариант делает это еще раньше со значительным отрывом.</p>
+<p><img src="https://cdn-images-1.medium.com/max/8680/1*XBOQZo9twVP_TXBaYVtD8w.jpeg" alt="Сравнение подходов к загрузке на WebPageTest."><em>Сравнение подходов к загрузке на WebPageTest.</em></p>
+<p>На этом примере становится понятно, что небольшому лендингу основное ускорение придает асинхронная загрузка шрифтов, а не прогрессивная загрузка стилей. Так происходит из-за слишком малого размера файла стилей. Прогрессивная загрузка будет давать ощутимую пользу только полноценным сайтам, у которых размер стилей больше в несколько раз.</p>
+<h3>Источники</h3>
+<ul>
+<li>
+<p><a href="https://habrahabr.ru/company/badoo/blog/320558/">33 способа ускорить ваш фронтенд в 2017 году</a>, Александр Гутников</p>
+</li>
+<li>
+<p><a href="https://jakearchibald.com/2016/link-in-body/">The future of loading CSS</a>, Джейк Арчибальд</p>
+</li>
+<li>
+<p><a href="http://habrahabr.net/thread/8679">Ускорение Lenta.ru: 3 человека, 2 недели, улучшение глубины просмотра на 27%</a>, Денис Паращий</p>
+</li>
+</ul>
+<p><em>Автор <a href="https://trigen.pro/">Даниил Оношко</a>, редактура <a href="https://medium.com/@pepelsbey">Вадима Макеева</a>.</em></p></div></main><footer class="footer"><p>2018 © Веб-стандарты</p></footer></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.page={"componentChunkName":"component---src-templates-article-jsx","jsonName":"articles-critical-and-progressive-css-74f","path":"/articles/critical-and-progressive-css/"};window.dataPath="413/path---articles-critical-and-progressive-css-74-f-992-NldwlAil7HIPzqTKubonvMMH36c";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-fdf6317c57abdf654ada.js"],"component---src-templates-article-list-jsx":["/component---src-templates-article-list-jsx-d6fdd15edf4f8b89c17b.js"],"component---src-templates-article-jsx":["/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"],"component---src-pages-404-jsx":["/component---src-pages-404-jsx-a85f47ff49f987715412.js"],"component---src-pages-events-jsx":["/component---src-pages-events-jsx-4f883960193822a95f04.js"],"component---src-pages-index-jsx":["/component---src-pages-index-jsx-6d406cab1d4cc5f63755.js"]};/*]]>*/</script><script src="/webpack-runtime-1400fd0a68f967e222fb.js" async=""></script><script src="/app-fdf6317c57abdf654ada.js" async=""></script><script src="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js" async=""></script><script src="/0-152a6e34a5c4bf7cd8a5.js" async=""></script></body></html>

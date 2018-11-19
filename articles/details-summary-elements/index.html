@@ -1,0 +1,134 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="generator" content="Gatsby 2.0.1"/><title data-react-helmet="true">Веб-стандарты</title><meta data-react-helmet="true" name="description" content="Сообщество разработчиков «Веб-стандарты»"/><meta data-react-helmet="true" name="keywords" content="web standards"/><link as="script" rel="preload" href="/0-152a6e34a5c4bf7cd8a5.js"/><link as="script" rel="preload" href="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"/><link as="script" rel="preload" href="/app-fdf6317c57abdf654ada.js"/><link as="script" rel="preload" href="/webpack-runtime-1400fd0a68f967e222fb.js"/><link rel="preload" href="/static/d/2/path---articles-details-summary-elements-967-605-ouH8hn6DdRLcdK72zFcZb4A4K1g.json" as="fetch" crossOrigin="use-credentials"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><header class="header"><h1>Веб-стандарты</h1></header><main><h1>Элементы details и summary</h1><time>29 августа 2011</time><div><h1>Элементы details и summary</h1>
+<p><a href="http://tomleadbetter.co.uk/">Том Лидбеттер</a> 29 августа 2011</p>
+<p>Вам часто приходилось использовать JavaScript для создания виджета, показывающего и скрывающего какое-то содержимое? Возможно, для этого вы даже скачивали целую JavaScript-библиотеку? Что ж, можете радоваться: HTML5 позволяет создавать подобное всего лишь парой строчек кода, без применения JavaScript. Зависит от браузера, конечно, но мы вернёмся к этому позже. Представляем вам элемент <code>&#x3C;details></code>.</p>
+<p>Вот что о нём написано <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/interactive-elements.html#the-details-element">в спецификации</a>:</p>
+<blockquote>
+<p>Элемент <code>details</code> представляет собой раскрывающийся виджет, показывающий пользователю дополнительную информацию или элементы управления.</p>
+<p><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/interactive-elements.html#the-details-element">Спецификация WHATWG HTML5</a></p>
+</blockquote>
+<p>Мы можем использовать <code>&#x3C;details></code> для создания «виджетов-аккордеонов», которые пользователь может разворачивать и сворачивать. Внутри этого элемента можно разместить любое содержимое.</p>
+<h2>Поддержка браузерами</h2>
+<p>Прежде чем мы продолжим, вам нужно учесть, что сейчас только Chrome поддерживает элемент <code>&#x3C;details></code>. <a href="http://my.opera.com/ODIN/blog/implementing-html5-details">Скоро к нему присоединится и Opera</a>, но немного костылей нам все-таки понадобится. Что ж, запускайте Chrome, и давайте смотреть.</p>
+<h2>Использование <code>&#x3C;details></code></h2>
+<p>Имеются два элемента: <code>&#x3C;details></code> и необязательный <code>&#x3C;summary></code>. Элемент <code>&#x3C;details></code> — это обёртка для содержимого, которое мы хотим показать и скрыть, а <code>&#x3C;summary></code> содержит описание и заголовок этой группы. Формально <code>&#x3C;summary></code> нам не нужен. В его отсутствие браузер подставит текст по умолчанию, например «details» в Chrome. Давайте взглянем на код:</p>
+<pre><code>&#x3C;details>
+    &#x3C;summary>Покажи-скрой меня&#x3C;/summary>
+    &#x3C;p>Бурное развитие внутреннего туризма привело Томаса Кука.&#x3C;/p>
+&#x3C;/details>
+</code></pre>
+<p>Вы можете <a href="http://jsbin.com/egefop#html,live">посмотреть это в действии на jsbin</a>. Даже этот простой пример прекрасно демонстрирует эффект переключения. Без JavaScript!</p>
+<h3>Атрибут <code>open</code></h3>
+<p>В вышеприведенном примере содержимое скрыто при загрузке страницы. Мы можем сделать его видимым по умолчанию, добавив одиночный атрибут <code>open</code> для <code>&#x3C;details></code>, <a href="http://jsbin.com/egefop/2#html,live">пример на jsbin</a>:</p>
+<pre><code>&#x3C;details open>
+    &#x3C;summary>Покажи-скрой меня&#x3C;/summary>
+    &#x3C;p>Бурное развитие внутреннего туризма привело Томаса Кука.&#x3C;/p>
+&#x3C;/details>
+</code></pre>
+<p>Атрибута <code>closed</code> не существует. Поэтому, опуская <code>open</code>, вы по умолчанию подразумеваете <code>closed</code>.</p>
+<h3>Элемент <code>&#x3C;summary></code></h3>
+<p>Мы бегло взглянули на <code>&#x3C;summary></code> в действии, теперь остановимся на нём подробнее. Внутри <code>&#x3C;summary></code> могут использоваться строчные элементы, такие как <code>&#x3C;span></code> или <code>&#x3C;strong></code>. Для чего это может быть нужно? Например, для дополнительного оформления или, как предлагает спецификация, использования <code>&#x3C;label></code> для элемента формы. По крайней мере, <em>было бы</em> удобно, если бы <a href="http://jsbin.com/egefop/3#html">подобная конструкция</a> работала корректно:</p>
+<pre><code>&#x3C;details>
+    &#x3C;summary>&#x3C;label for="name">Имя:&#x3C;/label>&#x3C;/summary>
+    &#x3C;input type="text" id="name" name="name" />
+&#x3C;/details>
+</code></pre>
+<p>Теоретически, нажатие на <code>&#x3C;summary></code> должно раскрывать содержимое элемента <code>&#x3C;details></code>. Но в этом примере содержимое не будет развернуто, потому что вы, фактически, взаимодействуете с <code>&#x3C;label></code>, который переводит фокус на соответствующий <code>&#x3C;input></code> — даже если он скрыт с помощью <code>&#x3C;details></code>.</p>
+<p>Честно говоря, этот момент еще требует прояснения. А что по вашему мнению должно происходить? Возможно, у разработчиков браузеров, читающих эту статью, есть какие-то идеи? :)</p>
+<h3>Вложенность <code>&#x3C;details></code></h3>
+<p>Вы можете помещать <code>&#x3C;details></code> друг в друга, если хотите, как это сделано в <a href="http://jsbin.com/egefop/14#html,live">следующем, вполне валидном примере</a>:</p>
+<pre><code>&#x3C;details>
+    &#x3C;summary>Вопрос 1&#x3C;/summary>
+    &#x3C;p>Население превышает широкий кристаллический фундамент.&#x3C;/p>
+    &#x3C;details>
+        &#x3C;summary>Приложенные документы&#x3C;/summary>
+        &#x3C;ul>
+            &#x3C;li>&#x3C;a href="#">Болгары очень дружелюбны;&#x3C;/a>&#x3C;/li>
+            &#x3C;li>Скумбрия неумеренно перевозит вулканизм;&#x3C;/li>
+            &#x3C;li>Дождливая погода, куда входят Пик-Дистрикт;&#x3C;/li>
+            &#x3C;li>Белый саксаул дегустирует живописный утконос;&#x3C;/li>
+        &#x3C;/ul>
+    &#x3C;/details>
+&#x3C;/details>
+</code></pre>
+<h2>Примеры использования</h2>
+<p>Так в каких же случаях вы можете использовать <code>&#x3C;details></code>? Первое, что приходит в голову — FAQ. Разработчики часто используют для них «аккордеоны», поэтому <code>&#x3C;details></code> замечательно подходит.</p>
+<p>Также не забывайте о навигации по странице. Это может быть закрепленный блок, передвигающаяся одновременно с прокруткой. <a href="http://jsbin.com/egefop/8#html,live">Возможно, что-то вроде этого?</a></p>
+<p>Вы можете использовать <code>&#x3C;details></code> для сворачивания и разворачивания блока комментариев в блоге, для профиля пользователя, для описания загружаемого файла, для сложных форм или в веб-приложениях, как показано в этом примере из спецификации:</p>
+<figure>
+    
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 267px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 211.61048689138576%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,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WnOuxZRrEYjTdFk51jxrsdVakp+fpVQKkpNFNEq2lMmjExkMJpvNhRGLJWRmGuKVBApSeWmFRJKWodCweCnpcg2LLeRxRSQSbcebCSR8Ij2RxATa6JSszKwsnU6j1ei02j12e7wAQujnzl1o+V1LS8sHV658cv78haIC2xuvv4HeiU7Yid2xHYVKQCViMer0lHSJSMTlKGUibYawttw2FZiK96qr12+cOX3m5Im3L1++fPbs2fKyckhmDpWCxxJ27ECTsVgiMkEmFtp2G/NzTbZ8i0WvPFq7L44M1fPTz7689snVS5cu3rz5h+vXrx+sqSWi0CwSaes21NZtSBYRNiKK+Dx7vqUYvLN1VoO6sbo4XvThWb7T3HLh4pWr1z698dnnX371e1txKRqbuBNDRiLxKBSBiMVJ+By5XKFTpZu0cplEmC7m1lXa44TBmfsHBlvvt7U/6ujq7HzwID6BLt/d0+vodXR393R0dnV1dba3t3d1POru6ujshPlDt8v5r44BrX1wYMA5OBjv8W630znY3983MDDQ09MLFrHY2srKClR/aLP/3WuhPf0TIzyDngw6/NwAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="&#x41F;&#x440;&#x438;&#x43C;&#x435;&#x440; &#x438;&#x441;&#x43F;&#x43E;&#x43B;&#x44C;&#x437;&#x43E;&#x432;&#x430;&#x43D;&#x438;&#x44F; details &#x438;&#x437; &#x441;&#x43F;&#x435;&#x446;&#x438;&#x444;&#x438;&#x43A;&#x430;&#x446;&#x438;&#x438;." title="" src="/static/bb70816ada1f337f0162172eae911f43/a9412/details-w3c.png" srcset="/static/bb70816ada1f337f0162172eae911f43/e0eb5/details-w3c.png 163w,
+/static/bb70816ada1f337f0162172eae911f43/a9412/details-w3c.png 267w" sizes="(max-width: 267px) 100vw, 267px">
+    </span>
+  </span>
+  
+    <figcaption>&#x41F;&#x440;&#x438;&#x43C;&#x435;&#x440; &#x438;&#x441;&#x43F;&#x43E;&#x43B;&#x44C;&#x437;&#x43E;&#x432;&#x430;&#x43D;&#x438;&#x44F; <code>&lt;details&gt;</code> &#x438;&#x437;&#xA0;&#x441;&#x43F;&#x435;&#x446;&#x438;&#x444;&#x438;&#x43A;&#x430;&#x446;&#x438;&#x438;.</figcaption>
+</figure>
+<p>На самом деле, даже глядя сейчас на админку WordPress, я вижу множество возможностей использования <code>&#x3C;details></code>. Если у вас есть ещё какие-то идеи и предложения — расскажите о них в комментариях.</p>
+<h2>Оформление</h2>
+<p>Как же нам оформить эту штуку? Для элемента, раскрывающего содержимое, в WebKit вы можете использовать псевдо-элемент <code>::-webkit-details-marker</code>. <a href="http://jsbin.com/egefop/9#html,live">Небольшой пример</a>:</p>
+<pre><code>details summary::-webkit-details-marker {
+    background: red;
+    color: #fff;
+    font-size: 500%;
+}
+</code></pre>
+<p>Мы также можем позиционировать этот элемент по отношению к родителю. <a href="http://jsbin.com/egefop/17#html,live">Здесь, например, он прижат к правому краю</a>. В общем-то, и все.</p>
+<p>А как же заменить раскрывающий элемент своей иконкой? Используя выборку по атрибуту, вы можете определить, когда <code>&#x3C;details></code> раскрыт, а когда закрыт, и применить соответствующее фоновое изображение. Мы делаем примерно то же самое в <a href="http://jsbin.com/egefop/11#html,live">этом примере</a>, за исключением того, что вместо фонового изображения мы используем псевдо-элемент <code>:after</code>:</p>
+<pre><code>summary::-webkit-details-marker {
+    display: none
+}
+
+summary:after {
+    background: red;
+    border-radius: 5px;
+    content: "+";
+    color: #fff;
+    float: left;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: -5px 10px 0 0;
+    padding: 0;
+    text-align: center;
+    width: 20px;
+}
+
+details[open] summary:after {
+    content: "-";
+}
+</code></pre>
+<p>В этом примере символы <code>+</code> и <code>-</code> используются в качестве раскрывающей ссылки. В зависимости от дизайна вы можете использовать <code>:before</code> вместо <code>:after</code>, но, в любом случае, оба псевдо-элемента позволяют использование изображения.</p>
+<p>Выборка по атрибуту <code>details[open]</code> скрывает в себе некоторые интересные возможности. Как хорошие HTML5-доктора, мы создали <a href="http://jsbin.com/egefop/15#html,live">доработанный пример</a>, показанный на этом скриншоте:</p>
+<figure>
+    
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 510px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 57.64705882352942%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAIAAADtbgqsAAAACXBIWXMAAAsSAAALEgHS3X78AAABg0lEQVQoz5WS2U7jQBBF/f9fM+A4XpCX6nY3Hi/BEU4UJ5MdgteMoqA8c21BhBAjMeehulyq5Va3lZeXwzzPF4s/ZVW9/g+Xy0VZrVazrnixXq/3+/1Tz9X5F7vdrm3brjgKozhO8nz+/MHhcLj6SL3aK+heVZXCGGeMSSGI2L28D8MwCAIhZBRFo9EoSZI0fYjjeDwexwlOhDEpTtO0KArFdhzLtIQUnufC5z7njLuuS0Su48D6vt/3J9t2CAeRlNJx3c1mo9yqqjEcmoahqreGrpumoRvGYDDQdV3t7FDvMICGqKZZlvXr5sYj6mSjjMjzGHEhmO/bts04R2/OOeQQ4n4HRnvQBkUeCkkI0clGamaamaZN7+4eNS2QEiKR7RGSmC94EP7GvWDJPM+n0+msZzKZ4FIVTK/LsqnKqiiasqxrfOHJ36l74LRt8xkET6dT91QPaYrLXG+2TZ/SfkPzhfdiTF8ul2gB5++POR6P5/NZwY+VZRmW2W639Y/BIpj8BveBY6TkFNVSAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="&#x42D;&#x43B;&#x435;&#x43C;&#x435;&#x43D;&#x442; details &#x432; Chrome." title="" src="/static/d618cabca3dbb30f0243ec807c40aa36/fa387/nice-details.png" srcset="/static/d618cabca3dbb30f0243ec807c40aa36/844a8/nice-details.png 163w,
+/static/d618cabca3dbb30f0243ec807c40aa36/fe46c/nice-details.png 325w,
+/static/d618cabca3dbb30f0243ec807c40aa36/fa387/nice-details.png 510w" sizes="(max-width: 510px) 100vw, 510px">
+    </span>
+  </span>
+  
+    <figcaption>&#x41E;&#x444;&#x43E;&#x440;&#x43C;&#x43B;&#x435;&#x43D;&#x43D;&#x44B;&#x439; <code>&lt;details&gt;</code> &#x432;&#xA0;Chrome.</figcaption>
+</figure>
+<p>Было бы интересно (хотя это и не всегда уместно), если бы мы могли использовать CSS-трансформации для анимации разворачивания и сворачивания <code>&#x3C;details></code>, но пока это невозможно.</p>
+<h2>Доступность</h2>
+<p>К сожалению, на момент написания статьи отсутствует возможность управления <code>&#x3C;details></code> с помощью клавиатуры. <a href="http://www.paciellogroup.com/blog/2011/08/accessibility-notes-2nd-august-2011/">Стив Фолкнер пишет</a>:</p>
+<blockquote>
+<p>Проблема в том, что на данный момент отсутствует поддержки клавиатуры и нет никакой инофрмации для обеспечения доступности.</p>
+</blockquote>
+<p>Попробуйте сами. Если вы раскроете элемент <code>&#x3C;details></code> с помощью мыши, тогда вы сможете использовать клавиатуру для навигации по вложенным элементам, но вы также должны иметь возможность открывать и закрывать <code>&#x3C;details></code> с клавиатуры. Что ж, неидеально, но я уверен, что разработчики Chrome скоро с этим разберутся. Правда, ребята?</p>
+<h2>Обратная совместимость</h2>
+<p>Прежде чем кто-то начнет восклицать, что это не работает в IE6, хочу сказать: мы знаем. Тем не менее, благодаря некоторым умным людям, мы можем обеспечить изящную обратную совместимость. В этой <a href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills">очень полезной коллекции всевозможных кроссбраузерных костылей</a> я нашел два решения, оба они требуют jQuery:</p>
+<ul>
+<li>Обратная совместимость для <a href="http://mathiasbynens.be/notes/html5-details-jquery"><code>&#x3C;details></code> с помощью jQuery</a> от Матиаса Байненса;</li>
+<li><a href="https://github.com/manuelbieh/details-Polyfill">Еще одна альтернатива <code>&#x3C;details></code>, также основанная на jQuery</a> от Мануэля Бье.</li>
+</ul>
+<p>Многие из вас захотят использовать <a href="http://modernizr.com/">Modernizr</a> для определения возможностей браузера, но на данный момент в Modernizr отсутствует проверка поддержки <code>&#x3C;details></code>. Матиас, автор приведенного выше решения для обратной совместимости, предлагает использовать <a href="https://github.com/Modernizr/Modernizr/blob/master/feature-detects/elem-details.js">этот Modernizr-сниппет</a>.</p>
+<h2>Зачем вообще это использовать?</h2>
+<p>Конечно, дарёному коню в зубы не смотрят, но все-таки — почему этот виджет существует в HTML5? Что ж, как и в случае с другими возможностями HTML5, он просто делает нашу жизнь легче. Реализация таких элементов, как календарь, слайдер, прогресс-бар, а теперь ещё и «аккордеон», становится гораздо проще и не требует использования JavaScript. Кто знает, что будет следующим? Нативные табы? Было бы здорово :)</p>
+<h2>В заключение</h2>
+<p>В этой статье мы продемонстрировали, как использовать элементы <code>&#x3C;details></code> и <code>&#x3C;summary></code>. Элемент <code>&#x3C;details></code> при помощи <code>&#x3C;summary></code> создаёт естественный для браузера интерактивный раскрывающийся виджет.</p>
+<p>На текущий момент <code>&#x3C;details></code> работает только в Chrome, но, надеюсь, эта ситуация в скором времени изменится. Пока что мы можем использовать в CSS только <code>::-webkit-details-marker</code>, но есть и множество других CSS-техник. Если у вас есть какой-либо опыт или идеи для использования элемента <code>&#x3C;details></code>, расскажите об этом в комментариях.</p>
+<p>Перевод оригинальной статьи «<a href="http://html5doctor.com/the-details-and-summary-elements/">The details and summary elements</a>» <a href="http://html5doctor.com/author/toml/">Тома Лидбеттера</a> (Tom Leadbetter), опубликованной на сайте <a href="http://html5doctor.com/">HTML5Doctor.com</a>.</p></div></main><footer class="footer"><p>2018 © Веб-стандарты</p></footer></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.page={"componentChunkName":"component---src-templates-article-jsx","jsonName":"articles-details-summary-elements-967","path":"/articles/details-summary-elements/"};window.dataPath="2/path---articles-details-summary-elements-967-605-ouH8hn6DdRLcdK72zFcZb4A4K1g";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-fdf6317c57abdf654ada.js"],"component---src-templates-article-list-jsx":["/component---src-templates-article-list-jsx-d6fdd15edf4f8b89c17b.js"],"component---src-templates-article-jsx":["/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"],"component---src-pages-404-jsx":["/component---src-pages-404-jsx-a85f47ff49f987715412.js"],"component---src-pages-events-jsx":["/component---src-pages-events-jsx-4f883960193822a95f04.js"],"component---src-pages-index-jsx":["/component---src-pages-index-jsx-6d406cab1d4cc5f63755.js"]};/*]]>*/</script><script src="/webpack-runtime-1400fd0a68f967e222fb.js" async=""></script><script src="/app-fdf6317c57abdf654ada.js" async=""></script><script src="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js" async=""></script><script src="/0-152a6e34a5c4bf7cd8a5.js" async=""></script></body></html>

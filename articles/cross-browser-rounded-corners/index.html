@@ -1,0 +1,283 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="generator" content="Gatsby 2.0.1"/><title data-react-helmet="true">Веб-стандарты</title><meta data-react-helmet="true" name="description" content="Сообщество разработчиков «Веб-стандарты»"/><meta data-react-helmet="true" name="keywords" content="web standards"/><link as="script" rel="preload" href="/0-152a6e34a5c4bf7cd8a5.js"/><link as="script" rel="preload" href="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"/><link as="script" rel="preload" href="/app-fdf6317c57abdf654ada.js"/><link as="script" rel="preload" href="/webpack-runtime-1400fd0a68f967e222fb.js"/><link rel="preload" href="/static/d/774/path---articles-cross-browser-rounded-corners-dce-eb6-e8W6znhPYaIYNaupitigEgXN3O4.json" as="fetch" crossOrigin="use-credentials"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><header class="header"><h1>Веб-стандарты</h1></header><main><h1>Кроссбраузерные закруглённые уголки</h1><time>28 июня 2010</time><div><h1>Кроссбраузерные закруглённые уголки</h1>
+<p><a href="http://my.opera.com/GreLI/blog/">Лев Солнцев</a> 28 июня 2010</p>
+<p>Согласно как древнему учению фен-шуй, так и последним медицинским исследованиям, прямые углы вредно влияют на человека. Издавна дизайнеры всего мира стараются скруглять углы чтобы уменьшить вред и сделать свою работу красивее. Это коснулось и области веб-дизайна.</p>
+<p>В свою очередь, должно быть, все верстальщики решают техническую проблему оформления сайтов закруглёнными уголками, требуемыми дизайнерами.</p>
+<h2>Существующие решения</h2>
+<p>Самым очевидным и простым способом сделать это ещё с ранних версий HTML являются картинки. Увы, самой простой способ не всегда самый лучший или подходящий. Например, можно просто наложить уголки с цветом фона на элемент, но такой способ не годится, когда, оставшаяся за скруглением, часть должна быть прозрачной.</p>
+<p>И, конечно же, хочется уменьшить число запросов к серверу, чтобы страница сразу показывалась в задуманном виде без лишних задержек.</p>
+<p>Кроме того, что прозрачные картинки усложняют вёрстку, дизайнеры ещё и хотят видеть их сглаженными, а с полупрозрачными картинками есть немалые <a href="http://www.google.ru/search?q=IE6+png">сложности</a> в Internet Explorer 6. Их можно решить через фильтры, но ценой этого будет сильное проседание производительности. Пожалуй, мало кто захочет чтобы с их сайта уходили клиенты, не дождавшиеся загрузки. Но не все об этом подозревают.</p>
+<p>Для облегчения работы (и снижения стоимости создания решений, основанных на веб-стандартах) было придумано и реализовано современными браузерами <a href="http://www.w3.org/TR/css3-background/#the-border-radius">CSS-свойство <code>border-radius</code></a>, которое позволяет закруглить уголки прямо средствами браузера без каких-либо дополнительных усилий.</p>
+<p>Так же в старых версиях браузера Opera (начиная с 9.5) существует ещё одно <a href="http://dev.opera.com/articles/view/new-development-techniques-using-opera-k/">обходное решение</a>: использовать векторную графику <a href="http://www.w3.org/TR/SVG/">SVG</a> в качестве фона.</p>
+<h2>А что же Internet Explorer?</h2>
+<p>Однако, пока ещё самым распространённым в мире браузером является Internet Explorer, не поддерживающий решение ни через CSS, ни через SVG. Тем не менее, в Internet Explorer есть ещё одна малоизученная (как мы увидим дальше) возможность: один из предков SVG — векторная графика <a href="http://msdn.microsoft.com/en-us/library/bb250524(VS.85).aspx">VML</a>.</p>
+<p>В VML есть предопределённая фигура: прямоугольник с закруглёнными углами <code>roundrect</code>. Решение на её основе уже <a href="http://snook.ca/archives/html_and_css/rounded_corners_experiment_ie/">давно предложено</a>, и даже есть <a href="http://www.dillerdesign.com/experiment/DD_roundies/">подключаемый компонент</a>, который с помощью скриптов создаёт закруглённые углы похожим образом. Но у этой фигуры есть один значительный недостаток: радиус кривизны задаётся через отношение к большей стороне, что делает результат непредсказуемым и неподходящим для многих случаев. Кроме автоматизации работы именно для обхода этой особенности используются скрипты в подключаемом компоненте.</p>
+<p>Обычно же требуется какой-то зафиксированный радиус скругления, например, 8 пикселов. Возможно ли так сделать в Internet Explorer, не выполняя работу браузера вместо него самого?</p>
+<p>Оказывается, да.</p>
+<h2>Изучаем VML</h2>
+<p>Для начала, нам надо определить свою фигуру. Пусть это будет простой прямоугольник:</p>
+<p><a href="/1-vml-0a23aa5d931de2c36956152daba65a10.html">Пример 1. VML</a> (только IE8 и ниже).</p>
+<pre><code>&#x3C;!DOCTYPE HTML>
+&#x3C;xml:namespace ns="urn:schemas-microsoft-com:vml" prefix="v"/>
+&#x3C;head>
+    &#x3C;title>Пример: VML&#x3C;/title>
+    &#x3C;meta charset="utf-8">
+    &#x3C;style>
+        v\:shape {
+            behavior:url(#default#VML);
+            display:inline-block;
+            width:100px;
+            height:20px;
+    }
+    &#x3C;/style>
+&#x3C;/head>
+&#x3C;body>
+    &#x3C;v:shape stroked="false" fillcolor="#EEE"
+        coordorigin="0 0" coordsize="1000 1000"
+        path="m 0,0 l 1000,0, 1000,1000, 0,1000 x e">
+    &#x3C;/v:shape>
+&#x3C;/body>
+</code></pre>
+<p>Для запуска VML в IE нужно несколько условий.</p>
+<ol>
+<li>Объявление XML-документа, с подключенным пространством имён VML, в любом месте документа. Это делает вторая строчка. Указание префикса <code>v</code> говорит, что тэги VML будут записаны с этим префиксом. В примере элемент таким образом обозначен <code>&#x3C;v:shape></code>. В скриптах (например, для подгружаемого содержимого) объявление можно сделать с помощью команды <code>document.namespaces.add('v', 'urn:schemas-microsoft-com:vml')</code></li>
+<li>Далее надо указать, чтобы элементы вели себя как VML. Это делает CSS-свойство <code>behavior:url(#default#VML)</code></li>
+<li>Отображаемые элементы VML должны быть в <code>&#x3C;body></code>. Опускать его нельзя.</li>
+<li>Для отображаемого элемента должны быть указаны размеры. Для это нужно задать свойство <code>display</code>, не равное <code>inline</code> (оно стоит по умолчанию): <code>display:inline-block</code> или <code>display:block</code> и, конечно же, надо указать сами размеры.</li>
+</ol>
+<figure>
+    
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 180px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 107.77777777777777%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAWCAIAAABPIytRAAAACXBIWXMAAAsSAAALEgHS3X78AAAC/ElEQVQ4y+WTS0wTQRyH1xqNMSpnE8+e1ESMB43GqIlGDxpFL2r0oFLkZXxAEGuVQtGSFK2KqCExIQYiUJFHLAFsoEqlhRaBre1un9vuVuhjd2enLdvn2ionHxHO/vLLZGaSL/9k8g2y/Qa5sYLJu8quvMytKuRWF4I1YiC6xK27AvJKwIYSsL4Y5Muiu+piW+/APfdj+TULu6WB0xXGvSUzyJoDk8oOo7jRtOM6tf+Wd0sZubmYOiEj1p+lkJMUUkCtPUNdVMFjNbFT8oCqmy96kWhv6BDaJGpxBbLiiKvo8eTxBvu2yvC+at/x+m9bbnGH5aFN5ZzoQlR0jhedTxy6Fz2miOyshgVyuPNeXFGtDssKn5yTIAdv+h/0spIOeLcrIlNHZB2M9A1T1RauVTOKHlDfTdd1BVXdlLIdl7ZMN/VQLRrmdfPAq9ahF50EUvPSJwiA8tl1w+8+aXvtFoMgMNiszqDr+/Th7cRYvwfTZ+IUPW+1mIeEZJBPCgPPpXq0EvACUvnYAWkbbkdNpo/j41qLxUgQFsw2qdcPjoz0GQ3DX6ZGCfcU6Z2mfNOhOUc4JmgnDHGyMwwySHG9mZ1HXS4sO9xPOnxenHDbvB5b9viNcpI+O/njxuOyul1fCQ/m92JByuF2WVF0Bil9MCsIiVRaWHpSqVRgzm13upByBSoIcRZACLl/luNAIpFIp9MLMdo/F0DKcjAfCNLhJSQYDC4s8JlMRhDSNIgtwsEQQy8hoVCI53/CSZqN/Mfw8l87C0cXYZrhwBLCsmw8Hk+nU1mvwgxEynKGJZdlWFYSlplzE76snjPZbxSLRiFkI5CFHAtzKwMhyO1/L2QBCJM+mxXDkOqnHiM61j866nagmM2M20wO3OTETdhXg8tu/mOduJlwmmZnJ5DG9nnxw6dXlErrF41O2zmkadUOtmr6WtCp95m4MxHFkjH8lyaieIbH/OQ0crTUXNUwcE0+LH9ulDXp76p0t5Va6aPR2qaxumf6v7W++bPk4efvoeFEDSA+uc0AAAAASUVORK5CYII=&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="&#x41F;&#x440;&#x438;&#x43C;&#x435;&#x440; 1. Internet Explorer 6." title="" src="/static/3fa21fa0dbe73af54f8b385f14744a5e/3cfde/1-shot.png" srcset="/static/3fa21fa0dbe73af54f8b385f14744a5e/ff448/1-shot.png 163w,
+/static/3fa21fa0dbe73af54f8b385f14744a5e/3cfde/1-shot.png 180w" sizes="(max-width: 180px) 100vw, 180px">
+    </span>
+  </span>
+  
+    <figcaption>&#x41F;&#x440;&#x438;&#x43C;&#x435;&#x440; 1. Internet Explorer 6.</figcaption>
+</figure>
+<p>Можно ещё отметить, что двоеточие имеет специальный смысл в CSS, и поэтому должно быть экранировано в селекторе с помощью обратного слэша. Также популярный ранее селектор <code>v\:*</code> не работает в Internet Explorer 8, из-за чего нужно либо перечислять все элементы, либо использовать дополнительный класс. Я предпочёл первое, так как в таком случае в итоге выходит меньше кода.</p>
+<p>Элемент <a href="http://www.w3.org/TR/NOTE-VML#_Toc416858386"><code>shape</code></a> задаёт произвольную фигуру. При этом использованы следующие параметры:</p>
+<ul>
+<li><code>coordorigin="0 0"</code> задаёт начало координат в положении <code>(0, 0)</code></li>
+<li><code>coordsize="1000 1000"</code> задаёт размеры «холста» (за них можно выходить, но в некоторых, не связанных с VML, случаях картинка может быть обрезана)</li>
+<li><code>path="m 0,0 l 1000,0, 1000,1000, 0,1000 x e"</code> рисует сам прямоугольник. Использован следующий синтаксис: <code>m</code> — передвигает в начало координат, <code>l</code> рисует прямые линии через ряд координат <code>(x, y)</code>, перечисленные через запятую, <code>x</code> замыкает контур, и <code>e</code> заканчивает рисование;</li>
+<li><code>fillcolor="#CCC"</code> заполняет элемент светло-серым цветом, чтобы мы его смогли увидеть. Следует отметить, что, заданный через CSS, фон у VML-элементов должен быть отключен. Иначе он будет нарисован прямоугольником под фигурой, что лишит нас преимуществ.</li>
+<li><code>stroked="false"</code> указывает, что нам не нужна рамка. (По умолчанию рисуется тонкая.)</li>
+</ul>
+<h3>Сложности</h3>
+<p>Как можно было заметить, все фигуры задаются в неком пространстве со своей координатной сеткой. Главной же в данном случае проблемой является то, что мы не можем так просто задать координаты в точках на экране. Надо каким-то образом связать координаты VML с пикселями, и определить свою фигуру, которая будет обладать требуемыми свойствами.</p>
+<p>Как это сделать?</p>
+<h3>Формулы</h3>
+<p>VML имеет возможность задавать, считать и использовать <a href="http://www.w3.org/TR/NOTE-VML#_Toc416858392">определённые соотношения</a>. Простой пример, пока ещё без вычислений:</p>
+<p><a href="/2-vml-formulas-50bfb7bf0b0808993a0f601fc1b39ccd.html">Пример 2. Формулы в VML</a> (только IE8 и ниже).</p>
+<pre><code>&#x3C;v:shape coordorigin="0 0" coordsize="1000 1000"
+    path="m 0,0 l @0,0, @0,@1, 0,@1 x e"
+    fillcolor="#EEE" stroked="false">
+    &#x3C;v:formulas>
+        &#x3C;v:f eqn="val width"/>
+        &#x3C;v:f eqn="val height"/>
+    &#x3C;/v:formulas>
+&#x3C;/v:shape>
+</code></pre>
+<figure>
+    
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 180px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 107.77777777777777%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAWCAIAAABPIytRAAAACXBIWXMAAAsSAAALEgHS3X78AAAC/ElEQVQ4y+WTS0wTQRyH1xqNMSpnE8+e1ESMB43GqIlGDxpFL2r0oFLkZXxAEGuVQtGSFK2KqCExIQYiUJFHLAFsoEqlhRaBre1un9vuVuhjd2enLdvn2ionHxHO/vLLZGaSL/9k8g2y/Qa5sYLJu8quvMytKuRWF4I1YiC6xK27AvJKwIYSsL4Y5Muiu+piW+/APfdj+TULu6WB0xXGvSUzyJoDk8oOo7jRtOM6tf+Wd0sZubmYOiEj1p+lkJMUUkCtPUNdVMFjNbFT8oCqmy96kWhv6BDaJGpxBbLiiKvo8eTxBvu2yvC+at/x+m9bbnGH5aFN5ZzoQlR0jhedTxy6Fz2miOyshgVyuPNeXFGtDssKn5yTIAdv+h/0spIOeLcrIlNHZB2M9A1T1RauVTOKHlDfTdd1BVXdlLIdl7ZMN/VQLRrmdfPAq9ahF50EUvPSJwiA8tl1w+8+aXvtFoMgMNiszqDr+/Th7cRYvwfTZ+IUPW+1mIeEZJBPCgPPpXq0EvACUvnYAWkbbkdNpo/j41qLxUgQFsw2qdcPjoz0GQ3DX6ZGCfcU6Z2mfNOhOUc4JmgnDHGyMwwySHG9mZ1HXS4sO9xPOnxenHDbvB5b9viNcpI+O/njxuOyul1fCQ/m92JByuF2WVF0Bil9MCsIiVRaWHpSqVRgzm13upByBSoIcRZACLl/luNAIpFIp9MLMdo/F0DKcjAfCNLhJSQYDC4s8JlMRhDSNIgtwsEQQy8hoVCI53/CSZqN/Mfw8l87C0cXYZrhwBLCsmw8Hk+nU1mvwgxEynKGJZdlWFYSlplzE76snjPZbxSLRiFkI5CFHAtzKwMhyO1/L2QBCJM+mxXDkOqnHiM61j866nagmM2M20wO3OTETdhXg8tu/mOduJlwmmZnJ5DG9nnxw6dXlErrF41O2zmkadUOtmr6WtCp95m4MxHFkjH8lyaieIbH/OQ0crTUXNUwcE0+LH9ulDXp76p0t5Va6aPR2qaxumf6v7W++bPk4efvoeFEDSA+uc0AAAAASUVORK5CYII=&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="&#x41F;&#x440;&#x438;&#x43C;&#x435;&#x440; 2. Internet Explorer 6." title="" src="/static/3fa21fa0dbe73af54f8b385f14744a5e/3cfde/1-shot.png" srcset="/static/3fa21fa0dbe73af54f8b385f14744a5e/ff448/1-shot.png 163w,
+/static/3fa21fa0dbe73af54f8b385f14744a5e/3cfde/1-shot.png 180w" sizes="(max-width: 180px) 100vw, 180px">
+    </span>
+  </span>
+  
+    <figcaption>&#x41F;&#x440;&#x438;&#x43C;&#x435;&#x440; 2. Internet Explorer 6.</figcaption>
+</figure>
+<p>Этот пример выглядит точно так же как первый, что показывает работоспособность формул. Элемент <code>formulas</code> содержит в себе список формул, в атрибуте <code>eqn</code> у каждого <code>f</code> содержатся сами формулы. На результат каждого элемента <code>f</code> можно ссылаться через запись вида <code>@№</code>, где <code>№</code> — номер выражения (перечисление начинается с нуля). Сами формулы также могут ссылаться на результат предыдущих вычислений. Но обо всём по порядку.</p>
+<p>Выражение <code>val</code> позволяет ссылаться на определённое значение. Оно может быть задано непосредственно, либо можно использовать какое-то ключевое слово. В данном случае это размеры «холста» (те, что задаются с помощью <code>coordsize</code>).</p>
+<p>Также у фигур может быть задан параметр <code>adj</code>, на который можно ссылаться как <code>#0</code> (и далее по счёту). Он пригодится нам в дальнейшем, чтобы задавать радиус кривизны уголков. К тому же нам пригодится то, что его можно переназначать для повторно используемой фигуры.</p>
+<h3>Приступаем к главному</h3>
+<p>Главное, что нам пригодится в формулах кроме самих вычислений — это возможность использовать в них размер фигуры в пикселах с помощью ключевых слов <code>pixelwidth</code> и <code>pixelheight</code>. Используя это, определим требуюмую фигуру:</p>
+<p><a href="/3-vml-pixels-c7b9a278f0422bf9371ed061cbaffe3d.html">Пример 3. VML и пикселы</a> (только IE8 и ниже).</p>
+<pre><code>&#x3C;v:shape adj="8" stroked="false" fillcolor="#CCC"
+    coordorigin="0 0" coordsize="1000000 1000000"
+    path="m @6,0 l @8,0 qx @0,@7 l @0,@9 qy @8,@1
+          l @6,@1 qx 0,@9 l 0,@7 qy @6,0 x e">
+    &#x3C;v:formulas>
+        &#x3C;v:f eqn="val width"/>
+        &#x3C;v:f eqn="val height"/>
+        &#x3C;v:f eqn="prod @0 1 pixelwidth"/>
+        &#x3C;v:f eqn="prod @1 1 pixelheight"/>
+        &#x3C;v:f eqn="sum pixelwidth 0 #0"/>
+        &#x3C;v:f eqn="sum pixelheight 0 #0"/>
+        &#x3C;v:f eqn="prod #0 @2 1"/>
+        &#x3C;v:f eqn="prod #0 @3 1"/>
+        &#x3C;v:f eqn="prod @4 @2 1"/>
+        &#x3C;v:f eqn="prod @5 @3 1"/>
+    &#x3C;/v:formulas>
+&#x3C;/v:shape>
+</code></pre>
+
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 510px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 47.05882352941176%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAIAAAC9o5sfAAAACXBIWXMAAAsSAAALEgHS3X78AAAA7klEQVQoz4WR22rEMAxE8///V0qhLHRzs+V14ots+ZI4VfJY2NQc/GBmNBrc+UCB8nEc2nqh13a0um3bvv9hby3l0stXKlWtVhnHso5yGWEBFz4GGAwqTPAOTz/afk16WvwA2vjQOYzSBogVqLzSpm5hAcuA6hKIl+16qT9HBbE8TZh9ukH4NHnqWYZ5NNha67gOhKSoznje93CGuGSAV/J3Lx7K8Otgo8B8g8TMAaOLImThwmkupT5g5WG8koyFp8j3sG0+ZRXclSy1URa5D4+UodzD+ROXxxRzPc2rQ/ZTqQuSo/wvJvJ/b8d1fgH+pgE5qsCGFAAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="&#x421;&#x438;&#x441;&#x442;&#x435;&#x43C;&#x430; &#x43A;&#x43E;&#x43E;&#x440;&#x434;&#x438;&#x43D;&#x430;&#x442;." title="" src="/static/a64d32c1b4e7a8c6f7296d30d682e5c8/fa387/coordinates.png" srcset="/static/a64d32c1b4e7a8c6f7296d30d682e5c8/844a8/coordinates.png 163w,
+/static/a64d32c1b4e7a8c6f7296d30d682e5c8/fe46c/coordinates.png 325w,
+/static/a64d32c1b4e7a8c6f7296d30d682e5c8/fa387/coordinates.png 510w" sizes="(max-width: 510px) 100vw, 510px">
+    </span>
+  </span>
+  
+<figure>
+    
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 180px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 107.77777777777777%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAWCAIAAABPIytRAAAACXBIWXMAAAsSAAALEgHS3X78AAADJElEQVQ4y81TS0wTURR9wWiMEV2buHalJmJcaDRGTTS6wCi6UaMLFRRE4wciiBUqBUpSFRV/ITESIwkfDWKEADZQben0MwidoTPT77QzpS30M51O6X98fFxoFNGVJyd3cZNzT+5954Et15l1ZaG1V7hl5yPLCyMrCrmVRVzOucjqi9zaEm5NCZdbzOVJhe21sU23+Z31sbyamR0S//Ey3a4SE1i516Bo1xXdM269xu6poDeWMhuK2SNSOvckC46yoIBddYI928Tn1wjHZFNN7+IXnifbGtvFN1VdRWUAHLRfeGQ83GjdXB7YXek+XDe5sSJyQDa9/nIk54yQczKeczq5v1rIl0e3VUYLZPy26oS8snNaWvjwVBXYd8PT8D5c1c5Xd0alXVFpR0jSHqp4E6jtCsm7ufp3QVknNPQo2ihJy3hzN9vSG3r9tO/lq4HnHTSoeeEWRY51W1SD3V+U7y04Iooh0qRCVD1fPr3Vqz84SU02wQZ9ZhwdEFNTiZTY90yiwcq5uAjKH1r5IEFZMKPxs1arxHEdTeMkYdBo+oeGenTI4NfRYdoxyrjGWPfYtNcaiIlKPZJgOgJcFhTXoWEfZreTjIuC/i6apB1m2kkwbouHscIK+7DjtE84bDjtIFgXOcVaHXYzho2DSw0mUUymM+LSkU6nfV47ZbODUjkGxU6aIQiC+hMsFsvMTDyTzczEgh6vH1xuxEUxqkUMCILoFoVer1er1T6fb94+yMUWxHrDqNFgMC4KFEWhgd/vnxOnguHoglinR+Fgw6KAeq1W+935vxDDnQ3/vDO8NpyKLAp4cHhtr9f7XSzMv3PcanPiOG5eAgRByGZhpJKBEA9KZxOW+quEZTKZcGjSQbtgPMfhN4oJUZ4PR/kwHwlH5io/X39kZK7PcQHGTUyQJKh85NRh6g/Dww4rRhAoRRht1CzJCcRuQX9JG4XSNqPJpAf32nxF9x9fVCjMX3tVyo6B3lZlf2tvTws2+jGbsCUFMhWjfmJSoLJx0sOMgUOX0JuNfVdlg7JnOmmz5k6T6pZCKXkwfLdZXftE8zvWPR2puj/yDTgzE1ZdL7xTAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="&#x41F;&#x440;&#x438;&#x43C;&#x435;&#x440; 3. Internet Explorer 6." title="" src="/static/41e0c373f06623af7e4acb61c82be8aa/3cfde/3-shot.png" srcset="/static/41e0c373f06623af7e4acb61c82be8aa/ff448/3-shot.png 163w,
+/static/41e0c373f06623af7e4acb61c82be8aa/3cfde/3-shot.png 180w" sizes="(max-width: 180px) 100vw, 180px">
+    </span>
+  </span>
+  
+    <figcaption>&#x41F;&#x440;&#x438;&#x43C;&#x435;&#x440; 3. Internet Explorer 6.</figcaption>
+</figure>
+<p>Теперь появились закруглённые уголки. Выражения формулы имеют следующий формат: «операция значение параметр1 параметр2». Над указанным значением производится какая-то операция, использующая указанные параметры. Для суммы <code>sum</code> вычисление будет «значение + параметр1 − параметр2», для умножения <code>prod</code> — «значение × параметр1 / параметр2».</p>
+<p>В этом примере первые две формулы дают ссылку на размеры фигуры, как и в предыдущем.</p>
+<p>В следующих двух считается отношение размеров в координатах VML к их пиксельным значениям, то есть фактически определяется сколько точек VML приходится на один пиксел по горизонтали и вертикали. Большие значения размера «холста» <code>coordsize</code> заданы для того, чтобы вычисления проводились с достаточной высокой точностью</p>
+<p>Далее, из размеров в пикселах вычитается размер закругления, указанный в <code>adj</code>. Наконец, координаты, где закончиваются уголки, пересчитываются в координаты VML и используются при задании формы фигуры.</p>
+<p>Для скругления использованы довольно простые команды рисования четверти эллипса <code>qx</code> и <code>qy</code>. <code>qx</code> начинает рисование с горизонтальной черты, а <code>qy</code> — с вертикальной.</p>
+<h3>Позиционирование</h3>
+<p>Итак, фигура определена. Теперь нам нужно сделать так, чтобы она отображалась в нужном месте. Сделаем пример, более похожий на настоящий, и добавим код для остальных браузеров:</p>
+<p><a href="/4.1-vml-pos-ib-148e54efd10d4fded80e22e4c176fd15.html">Пример 4.1. VML и содержимое страницы</a>.</p>
+<pre><code>&#x3C;style>
+    .round {
+        display:inline-block;
+        padding:10px;
+        -webkit-border-radius:8px;
+        -moz-border-radius:8px;
+        border-radius:8px;
+        background:#CCC;
+}
+&#x3C;/style>
+&#x3C;!--[if VML&#x26;(lt IE 9)]>
+&#x3C;style>
+    .round {
+        background:none!important;
+        padding:0!important;
+}
+    .round-vml {
+        position:relative;
+        padding:11px 9px 9px 11px;
+        height:100%;
+}
+    v\:shape,
+    v\:formulas,
+    v\:f { behavior:url(#default#VML) }
+    v\:shape { display:inline-block }
+&#x3C;/style>
+&#x3C;xml:namespace ns="urn:schemas-microsoft-com:vml" prefix="v"/>
+&#x3C;![endif]-->
+
+&#x3C;div class="round">
+&#x3C;!--[if VML&#x26;(lt IE 9)]>
+    &#x3C;v:shape adj="8" class="round-vml"
+        stroked="false" fillcolor="#CCC"
+        coordorigin="0 0" coordsize="1000000 1000000"
+        path="m @6,0 l @8,0 qx @0,@7 l @0,@9 qy @8,@1
+              l @6,@1 qx 0,@9 l 0,@7 qy @6,0 x e">
+        &#x3C;v:formulas>
+            &#x3C;v:f eqn="val width"/>
+            &#x3C;v:f eqn="val height"/>
+            &#x3C;v:f eqn="prod @0 1 pixelwidth"/>
+            &#x3C;v:f eqn="prod @1 1 pixelheight"/>
+            &#x3C;v:f eqn="sum pixelwidth 0 #0"/>
+            &#x3C;v:f eqn="sum pixelheight 0 #0"/>
+            &#x3C;v:f eqn="prod #0 @2 1"/>
+            &#x3C;v:f eqn="prod #0 @3 1"/>
+            &#x3C;v:f eqn="prod @4 @2 1"/>
+            &#x3C;v:f eqn="prod @5 @3 1"/>
+        &#x3C;/v:formulas>
+&#x3C;![endif]-->
+    Закруглённые уголки — это реальность!
+&#x3C;!--[if VML&#x26;(lt IE 9)]>
+    &#x3C;/v:shape>
+&#x3C;![endif]-->
+&#x3C;/div>
+</code></pre>
+<p>Размеры элемента можно изменять. Радиус закругления от этого не меняется.</p>
+<figure>
+    
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 180px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 107.77777777777777%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAWCAIAAABPIytRAAAACXBIWXMAAAsSAAALEgHS3X78AAAEAklEQVQ4y42TW0wjZRTHR6JmY1z32cRnn1YfMPug0Rg10awPu9HVF9fogwq7sKzxAlkQESplF5LuygIukBIikG0olKVbsEBLgdILvczQ0pm2M70x0GFboJdpOy1tacez7aKGYOI/JyffnPl+3znnmzNI5Q/BF+tjZ75ln/4m8UxV4tkq9lQ1W/F14vmr7Jla9oVa9nQNWyngXm9Pv/Jz8s2b6cq2zBstu5/Wm9+qdSCn3rWKpObq29hr3zPvNNJn64Iv1zAfCejTlxnkYwa5xDz3GfNVd/JCG/eJcK/7wcGVgZykS8rfb5ZV1yNPnfdf6UEvdnlebYi83RS82PHo7I3EB8L9l64nKr7kKi4fVHyRe7+Vu9CZOteUuiRMnmvNdjZN7guq7n7ejLz3486th/FmabJ1MiWQpQQTsRZprPF+pF0W65SzNx9EhZOQcEckoVrEG31yRqyMjd2bG/5DNTBBI22D2zzPMtserVqu0zz0ECaej5EOrUmr0C1OWfQzm6ShmGWiYReBqfj8XjbPz/W3GPAGNssjDXe9yaib8uAourq2piEIM00TpNtqMCwsLyvMJrVtfYUOrAe37My2fT/kjaR5jcWUDU5E2CJS04HFw7jfTwa3KMi/RZN0wEVvuoPbnp2gFzzEIbLpdwZ8BB1wM1vkHuMN+F04voFcu+Xg+dxhgf//Ojw8DIf8lM+P1HXiAG/SQZJ0+3w+6kiex6L+JbIUpDKZTKFYyKSjO6Fd5HoXwfMpkxldW1tbWFgAbzKZjEajwWAwlgSPEDSXBMFwOFxOH2XTT2CLdd1isYyPj4tEop6enqGhIbFYPDAw0N/fPzo6Cr63t1ehUFit1iM4H42nnsBmCwYwnK1Wq+fn51dXV/V6vVar1Wg0yyUtLi6WqzgJtq4DCalkMlk51eDgoEqlUiqVgI2MjEilUp1OB3tOgKFsaAy2wtlLS0vQPJSAoqjNZsMwDNZQQvk6ToCtqA1Oha4gg0QimZ6enpqaksvls7OzUAt4uCq73Q7w7u7uMTgJPUOTY2NjAA8PD0tKAnhmZgZg8JAWbgvaDoVCRzBX/s4ZB+6C8nDc4XQSLpfLWRJB4CCCIBwOh60k2BOPx3m+CKMRiSWRuscTls/lYW4KMDr5/D/2t0rrQtkgaaFQiMceBegtGM8N+I0yaS6VYjkuAT6VZJNJlkuV1scMXiXiLBsJbrudJIk09myacf3Myorf63C7MMpt9VKol0RJp8nvwU40H4XRPtThsCC3JeHqO71XRSKXTanVTKiUI5qFEaVCjK//Wcz6chyZT1PHLMdRxQNyJ2hHPryG3eia+06oFvabBX2GX7q1P4k0Lb+t/Nqnb//d8F/Wcc/YfMf4FzRr/mfzhEWgAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="&#x41F;&#x440;&#x438;&#x43C;&#x435;&#x440; 4. &#x423;&#x437;&#x43A;&#x43E;&#x435; &#x43E;&#x43A;&#x43D;&#x43E; Internet Explorer 6." title="" src="/static/9fe53890692b42e6ed58a26ae3df332a/3cfde/4.1-ie-shot.png" srcset="/static/9fe53890692b42e6ed58a26ae3df332a/ff448/4.1-ie-shot.png 163w,
+/static/9fe53890692b42e6ed58a26ae3df332a/3cfde/4.1-ie-shot.png 180w" sizes="(max-width: 180px) 100vw, 180px">
+    </span>
+  </span>
+  
+    <figcaption>&#x41F;&#x440;&#x438;&#x43C;&#x435;&#x440; 4. &#x423;&#x437;&#x43A;&#x43E;&#x435; &#x43E;&#x43A;&#x43D;&#x43E; Internet Explorer 6.</figcaption>
+</figure>
+<p>Оказывается, что фигуры VML удачно встают на место существующих элементов, при этом очень ценно то, что для них можно (и нужно) указать стопроцентную высоту, которая будет работать. Ширину, указывать не стоит — элемент «вылезет» из-за того, что по стандартам задаётся ширина содержимого без отступов, к тому же она и так отрабатывается автоматически. В зависимости от задачи: блочный элемент или ширина по содержимому, следует использовать <code>display:block</code> — <a href="/4.2-vml-pos-b-fe9f949aed8307f7dbd46b1a8010e718.html">пример 4.2</a> или <code>display:inline-block</code> — <a href="/4.1-vml-pos-ib-148e54efd10d4fded80e22e4c176fd15.html">пример 4.1</a>. Открывающий и закрывающий тэги должны находится в начале и в конце соответственно.</p>
+<figure>
+    
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 180px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 85%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAARCAIAAABSJhvpAAAACXBIWXMAAAsSAAALEgHS3X78AAACw0lEQVQ4y41T+0/aUBjt/58szGzEzOdQNwhZ2AIuOHkULBQpbQFpy0N59La3ty0oqFNB9sNOURf3w5KdnH75vvO9em+BWywWLvN96nv+xPcnrjd2XR+WuV6gjC89b0wZc5gLMtdnzIPiev7DwwPnMi8nnX1SlCyvZgpqRe5VlYuKfF5VL3LFRoZXiqLWbDuqZtV1u1ofKC2z1hxK9QGxKEcIPSqICSGfSBbXwh/fvt/djx6G3u18+ZY7iH1fC0f2PiflM3LMK3y5lSkoJxX9R15C2B8QziRWVe4oSk/VRrXGuXI2UFsjqR44DZ00DNLQTbnZh6i2hnXNhAML5aI/5Ch1mH9DveuhNbbZlDhXFpvaAWeOd3M+cEB3cjeZzsdXD0+E71/eW5bN2Ta9MCcY/2btA+aZzl2x3BRrRp9cNQ1yEP2WSp8M7es+mQ6s2R8ia5oWZ9lU1Yh8ZuKSVM3G8ZSWJTdHSotIjWH863FeaDYMp9l2XxPKcESw2badMbE9cETcIWGwIKE+yLypRccW9WFRBlorS9klIRbnBmDtttFpG+0Vu5124Bugruvas0Vs6PDh6JrmOA7aON/3dd1IJpPFYvHkRMCTzeZ4vlAoBIIglCCKFTHP8wghQUcOLYy5HH4v3W43Ho+HQqFwOLy1tbW5ubm9vQ27vr4eiUQgHh4e7uzsRKNR6BsbG6hBC2MsaO71epVKpSpJoiiWy+XqC05PT6HD1mo1hLIso6BUKgmC0Ol0mOs+NyORzeFt+VQqtbu7i1XYs7+/j1XYs7dCIpFAKhaLSZIUND9t7nS7GCmsgPPwwfGK6XQ6k8mkVzg6OspmsxAzuI98viKKumEEmzFgOp0RXPzfoJTiI9JXgGivYJrmbDbDhQfNs9n18tcS/83F4+PiBfPFP/G4XN7e/sQ4bj6fY+RoNBr8N1BsmuTu7v43v4VNG6/17KYAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="&#x41F;&#x440;&#x438;&#x43C;&#x435;&#x440; 4. &#x421;&#x43E;&#x432;&#x440;&#x435;&#x43C;&#x435;&#x43D;&#x43D;&#x44B;&#x439; &#x431;&#x440;&#x430;&#x443;&#x437;&#x435;&#x440;." title="" src="/static/44527e8c73da73783c3070cc0798b361/3cfde/4.1-modern-shot.png" srcset="/static/44527e8c73da73783c3070cc0798b361/ff448/4.1-modern-shot.png 163w,
+/static/44527e8c73da73783c3070cc0798b361/3cfde/4.1-modern-shot.png 180w" sizes="(max-width: 180px) 100vw, 180px">
+    </span>
+  </span>
+  
+    <figcaption>&#x41F;&#x440;&#x438;&#x43C;&#x435;&#x440; 4. &#x421;&#x43E;&#x432;&#x440;&#x435;&#x43C;&#x435;&#x43D;&#x43D;&#x44B;&#x439; &#x431;&#x440;&#x430;&#x443;&#x437;&#x435;&#x440;.</figcaption>
+</figure>
+<p>Нижний правый угол начинает обрезаться из-за наличия <code>hasLayout</code> на родительском элементе, поэтому нужен <code>position:relative</code>. На этом этапе уже становятся заметными особенности отображения VML. Края выглядят размытыми, а отступы надо подбирать вручную, не забывая перед этим убрать отступ и фон у родительского элемента, а в дальнейшем и рамку.</p>
+<h3>Завершающие штрихи</h3>
+<p>VML позволяет создавать заготовки, чтобы ссылаться на них при дальнейшем использовании. Это позволяет уменьшить размер страницы благодаря повторному использованию кода. Сделаем это, а заодно и соберём разные примеры использования на одной странице. Также укажем неоднородный фон, чтобы были видны основные преимущества:</p>
+<p><a href="/5-vml-roundies-3611ff747a10f88c2707ba8af69ed72e.html">Пример 5. Закруглённые уголки в VML</a>.</p>
+<pre><code>&#x3C;div class="round">
+    &#x3C;!--[if VML&#x26;(lt IE 9)]>
+    &#x3C;v:shape type="#vml-round" class="round-vml"
+        stroked="false" fillcolor="#FFF">
+    &#x3C;![endif]-->
+        Простые закруглённые уголки
+    &#x3C;!--[if VML&#x26;(lt IE 9)]>&#x3C;/v:shape>&#x3C;![endif]-->
+&#x3C;/div>
+&#x3C;div class="round border">
+    &#x3C;!--[if VML&#x26;(lt IE 9)]>
+    &#x3C;v:shape type="#vml-round"
+        class="round-vml border-vml" adj="13"
+        fillcolor="#FFF" strokeweight="6px" strokecolor="#BADBAD">
+    &#x3C;![endif]-->
+        Закруглённые уголки с рамкой
+    &#x3C;!--[if VML&#x26;(lt IE 9)]>&#x3C;/v:shape>&#x3C;![endif]-->
+&#x3C;/div>
+&#x3C;div class="round inline">
+    &#x3C;!--[if VML&#x26;(lt IE 9)]>
+    &#x3C;v:shape type="#vml-round" class="round-vml inline-vml"
+        stroked="false" fillcolor="#FFF">
+    &#x3C;![endif]-->
+        Простые закруглённые уголки в строку
+    &#x3C;!--[if VML&#x26;(lt IE 9)]>&#x3C;/v:shape>&#x3C;![endif]-->
+&#x3C;/div>
+&#x3C;div class="round inline border">
+    &#x3C;!--[if VML&#x26;(lt IE 9)]>
+    &#x3C;v:shape type="#vml-round"
+        class="round-vml inline-vml border-vml" adj="13"
+        fillcolor="#FFF" strokeweight="6px" strokecolor="#BADBAD">
+    &#x3C;![endif]-->
+        Закруглённые уголки с рамкой в строку
+    &#x3C;!--[if VML&#x26;(lt IE 9)]>&#x3C;/v:shape>&#x3C;![endif]-->
+&#x3C;/div>
+</code></pre>
+<p>Теперь всё выглядит примерно так:</p>
+<figure>
+    
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 650px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 36.407766990291265%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAHCAIAAACHqfpvAAAACXBIWXMAAAsSAAALEgHS3X78AAABpklEQVQY0x2KXU/TUACG+8+cP0GBqBdeeOuNFyZyZcKImoDDwfjoZt0yoWQbUsdWGX4McHQTBvtg55yWrd05p+162tO58BucJE+ePMn7Ck/j7mzMe7TizcW8h8uj2fejB0vuzLLzOM6exL2ZGLsXDe4vBpEoi0T9O3uRhdGzrbGY/C38PDrGxlW/d2nprT5omqhF+h1stD2MAsdgBHkY+ARyR/cpZAQw0vMpIEbLNjtCqaj6nmWZaHBzTYa665g8sENuh6HDuTMO3ZA7UwJGx/9N2Gg4XekQ2hYUypUjGyPLhJQYlgmwBQOf3L0xD+i0fYbD0Oaccp9O/rLJhN3ectcd2AQK+Z086mqg0wDdRveqBtqafn1eUdLwpmlRaBIwwL2ho9vM7KF6bjO6J76V1xaSiy9Q81QoZD6jxq/6YVH7plxW1fqh8qdSVLOr2rGiVYsXNfX8tFz7vlevHpz9yGffvNx+90pempdeP9ebJ4KYyCjSh/30enknpcqpfWn1y6c1dffjwfZWSU4qmfWcGMuJK0o68TW7WZA2ClKitCuV5VT74uwf3P456nmpUwIAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="&#x41F;&#x440;&#x438;&#x43C;&#x435;&#x440; 5. Internet Explorer 6." title="" src="/static/b098a67df042a9d70dcbf49c174f2874/ce0d4/5-shot.png" srcset="/static/b098a67df042a9d70dcbf49c174f2874/a6060/5-shot.png 163w,
+/static/b098a67df042a9d70dcbf49c174f2874/1a895/5-shot.png 325w,
+/static/b098a67df042a9d70dcbf49c174f2874/ce0d4/5-shot.png 650w,
+/static/b098a67df042a9d70dcbf49c174f2874/55c08/5-shot.png 824w" sizes="(max-width: 650px) 100vw, 650px">
+    </span>
+  </span>
+  
+    <figcaption>&#x41F;&#x440;&#x438;&#x43C;&#x435;&#x440; 5. Internet Explorer 6.</figcaption>
+</figure>
+<p>Фигура задаётся с помощью <code>shapetype</code>, затем конкретные применения ссылаются на её с помощью <code>type="#vml-round"</code>.</p>
+<p>Радиус закругление задаётся с помощью параметра <code>adj</code>. Можно определить в заготовке значение по умолчанию и переопределять его по мере необходимости. Толщина и цвет обрамления задаются с помощью <code>strokeweight</code> и <code>strokecolor</code> соответственно.</p>
+<p>Здесь во всей красе видны недостатки подхода. Способ достаточно трудоёмкий, особенно при эмуляции рамки. VML требует отдельного прописывания свойств, которые обычно задаются через CSS: цвет фона, параметры рамки, радиус закругления. В версии CSS для Internet Explorer надо отдельно переназначать и подгонять значения отступов. Механизм отрисовки элемента с рамкой отличается от обычного CSS, из-за чего и нужно вручную подбирать параметры.</p>
+<p>Вдобавок, в 6 и 7 версии IE при использовании блочных вариантов, появляется горизонтальная полоса прокрутки, с которой, видимо, надо бороться отдельно — в примере по ссылке для этого используется обрамляющий элемент.</p>
+<p>VML позволяет <a href="http://msdn.microsoft.com/en-us/library/bb264134(v=VS.85).aspx">определённые действия над рамками</a>, но если вы захотите сделать неоднородную рамку, то придётся повозиться отдельно. В текущей предварительной версии IE9 пример не работает в режиме совместимости со старыми браузерами.</p>
+<p>Тем не менее этот способ позволяет решить вопрос создания закруглённых уголков на произвольном фоне без использования картинок, а также при определённой доработке способен в перспективе решить более сложные вопросы: такие как использование градиентов и теней.</p>
+<p>Производительность и потребление ресурсов на глаз лучше, чем при использовании фильтров.</p></div></main><footer class="footer"><p>2018 © Веб-стандарты</p></footer></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.page={"componentChunkName":"component---src-templates-article-jsx","jsonName":"articles-cross-browser-rounded-corners-dce","path":"/articles/cross-browser-rounded-corners/"};window.dataPath="774/path---articles-cross-browser-rounded-corners-dce-eb6-e8W6znhPYaIYNaupitigEgXN3O4";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-fdf6317c57abdf654ada.js"],"component---src-templates-article-list-jsx":["/component---src-templates-article-list-jsx-d6fdd15edf4f8b89c17b.js"],"component---src-templates-article-jsx":["/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"],"component---src-pages-404-jsx":["/component---src-pages-404-jsx-a85f47ff49f987715412.js"],"component---src-pages-events-jsx":["/component---src-pages-events-jsx-4f883960193822a95f04.js"],"component---src-pages-index-jsx":["/component---src-pages-index-jsx-6d406cab1d4cc5f63755.js"]};/*]]>*/</script><script src="/webpack-runtime-1400fd0a68f967e222fb.js" async=""></script><script src="/app-fdf6317c57abdf654ada.js" async=""></script><script src="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js" async=""></script><script src="/0-152a6e34a5c4bf7cd8a5.js" async=""></script></body></html>

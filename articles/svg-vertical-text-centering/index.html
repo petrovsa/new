@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="generator" content="Gatsby 2.0.1"/><title data-react-helmet="true">Веб-стандарты</title><meta data-react-helmet="true" name="description" content="Сообщество разработчиков «Веб-стандарты»"/><meta data-react-helmet="true" name="keywords" content="web standards"/><link as="script" rel="preload" href="/0-152a6e34a5c4bf7cd8a5.js"/><link as="script" rel="preload" href="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"/><link as="script" rel="preload" href="/app-fdf6317c57abdf654ada.js"/><link as="script" rel="preload" href="/webpack-runtime-1400fd0a68f967e222fb.js"/><link rel="preload" href="/static/d/254/path---articles-svg-vertical-text-centering-398-862-N9DCt3TxOOKSCxgo2PV2hsDxjw.json" as="fetch" crossOrigin="use-credentials"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><header class="header"><h1>Веб-стандарты</h1></header><main><h1>Простое вертикальное центрирование текста с помощью SVG</h1><time>26 марта 2013</time><div><h1>Простое вертикальное центрирование текста с помощью SVG</h1>
+<p><a href="http://lea.verou.me">Лия Веру</a> 26 марта 2013</p>
+<p>Существует множество способов вертикального выравнивания текста в контейнере произвольных размеров:</p>
+<ul>
+<li>использование <code>display:table</code>;</li>
+<li>Flexbox;</li>
+<li>хаки с использованием <code>display:inline-block</code>;</li>
+<li>оборачивание текста в дополнительный элемент и его абсолютное позиционирование;</li>
+</ul>
+<p>…и, вероятно, множество других, о которых я уже забыла.</p>
+<p>Однако, иногда бывает так, что ни один из них не подходит, и вот — я предлагаю ещё один вариант. Естественно, у него есть свои недостатки, но в некоторых случаях он подойдёт лучше, чем существующие решения.</p>
+<p>Всё это началось, когда я обнаружила в SVG-спецификации свойство <code>text-anchor</code>. Оно определяет, куда ссылаются атрибуты <code>x</code> и <code>y</code> элемента <code>&#x3C;text></code> (см. подробнее <a href="http://www.w3.org/TR/SVG/text.html#TextElementXAttribute" title="x">про x</a> и <a href="http://www.w3.org/TR/SVG/text.html#TextElementYAttribute" title="y">про y</a> в спецификации SVG. — <em>прим. редактора).</em> Волшебство начинается, когда мы задаем в качестве значения <code>middle</code> и атрибуты <code>x</code> и <code>y</code> указывают на центр текста. Так что если задать значения 50%, они будут указывать в центр SVG-контейнера. А если высота и ширина установлены в 100%, текст окажется в центре контейнера, которым может быть любой HTML-элемент!</p>
+<p>Следует учитывать, что центрируется в том числе и базовая линия текста, так что я постаралась найти способ адекватно её сместить. Установка <code>dominant-baseline:middle</code> для элемента <code>&#x3C;text></code> вроде бы решила проблему везде, кроме IE. В результате я просто задала элементу <code>&#x3C;text></code> <code>dy=".3em"</code>, что сработало везде, но может требовать настройки сообразно реальной высоте строки (см. подробнее <a href="http://www.w3.org/TR/SVG/text.html#TextElement">про элемент <code>&#x3C;text></code></a> и <a href="http://www.w3.org/TR/SVG/text.html#TextElementDYAttribute">про атрибут <code>dy</code></a> в спецификации SVG. — <em>прим. редактора).</em></p>
+<p>Кроме того, я вижу у метода следующие недостатки:</p>
+<ul>
+<li>избыточная разметка (а именно, 2 элемента: <code>&#x3C;svg></code> и <code>&#x3C;text></code>);</li>
+<li>если текст занимает больше одной строки, вам придётся разбивать его на строки вручную;</li>
+<li>не получится применить некоторые новомодные CSS-свойства: например, <code>text-shadow</code> в Chrome будет работать, а в Firefox — нет, поскольку формально оно всё ещё не входит в спецификацию SVG;</li>
+<li>вам придётся дублировать цвет текста в свойстве <code>fill</code>, так как SVG не понимает СSS-свойство <code>color</code> (значение цвета из CSS можно получить с помощью <code>fill:currentColor</code> — <em>прим. редактора).</em></li>
+</ul>
+<p>Но есть и некоторые достоинства:</p>
+<ul>
+<li>не нужно трогать родительский контейнер;</li>
+<li>мягкая деградация в браузерах, не поддерживающих SVG;</li>
+<li>абсолютно доступный, не помешает SEO;</li>
+<li>отлично работает в IE9, в отличие от Flexbox;</li>
+<li>можно использовать любые стили для текста, доступные в SVG. Например, <code>stroke</code>!</li>
+</ul>
+<p>Результат показан ниже, посмотреть на код и поиграть с ним <a href="http://dabblet.com/gist/5229803">можно в Даблете</a>.</p>
+<iframe src="http://dabblet.com/gist/5229803" width="510" height="510"></iframe>
+<p>Проверено в последних Chrome, Firefox, IE9+. Несмотря на то, что этот способ не подойдёт для всех случаев, надеюсь, он вам пригодится.</p>
+<p>Перевод оригинальной записи «<a href="http://lea.verou.me/2013/03/easily-center-text-vertically-with-svg/">Easily center text vertically, with SVG!</a>» Лии Веру (Lea Verou). Переведено и опубликовано с разрешения автора.</p>
+<p>Перевод выполнил <a href="http://twitter.com/silentimp">Антон Немцев</a> (SilentImp).</p></div></main><footer class="footer"><p>2018 © Веб-стандарты</p></footer></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.page={"componentChunkName":"component---src-templates-article-jsx","jsonName":"articles-svg-vertical-text-centering-398","path":"/articles/svg-vertical-text-centering/"};window.dataPath="254/path---articles-svg-vertical-text-centering-398-862-N9DCt3TxOOKSCxgo2PV2hsDxjw";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-fdf6317c57abdf654ada.js"],"component---src-templates-article-list-jsx":["/component---src-templates-article-list-jsx-d6fdd15edf4f8b89c17b.js"],"component---src-templates-article-jsx":["/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"],"component---src-pages-404-jsx":["/component---src-pages-404-jsx-a85f47ff49f987715412.js"],"component---src-pages-events-jsx":["/component---src-pages-events-jsx-4f883960193822a95f04.js"],"component---src-pages-index-jsx":["/component---src-pages-index-jsx-6d406cab1d4cc5f63755.js"]};/*]]>*/</script><script src="/webpack-runtime-1400fd0a68f967e222fb.js" async=""></script><script src="/app-fdf6317c57abdf654ada.js" async=""></script><script src="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js" async=""></script><script src="/0-152a6e34a5c4bf7cd8a5.js" async=""></script></body></html>

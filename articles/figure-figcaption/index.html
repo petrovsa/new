@@ -1,0 +1,148 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="generator" content="Gatsby 2.0.1"/><title data-react-helmet="true">Веб-стандарты</title><meta data-react-helmet="true" name="description" content="Сообщество разработчиков «Веб-стандарты»"/><meta data-react-helmet="true" name="keywords" content="web standards"/><link as="script" rel="preload" href="/0-152a6e34a5c4bf7cd8a5.js"/><link as="script" rel="preload" href="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"/><link as="script" rel="preload" href="/app-fdf6317c57abdf654ada.js"/><link as="script" rel="preload" href="/webpack-runtime-1400fd0a68f967e222fb.js"/><link rel="preload" href="/static/d/148/path---articles-figure-figcaption-0-a-5-4f5-3Zuh463vkaCSjY9s1l3zMZdk6Og.json" as="fetch" crossOrigin="use-credentials"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><header class="header"><h1>Веб-стандарты</h1></header><main><h1>Элементы figure и figcaption</h1><time>12 марта 2012</time><div><h1>Элементы figure и figcaption</h1>
+<p><a href="http://richclarkdesign.com/">Ричард Кларк</a> 12 марта 2012</p>
+<p>В обычных печатных изданиях, таких как книги и журналы, изображения, таблицы или примеры кода обычно сопровождаются подписью. До сих пор у нас не было возможности семантически выделять такой тип содержимого напрямую в HTML, вместо того чтобы прибегать к именам классов СSS. HTML5 надеется исправить эту проблему с помощью новых элементов: <code>&#x3C;figure></code> и <code>&#x3C;figcaption></code>. Давайте разберемся!</p>
+<h2>Элемент <code>&#x3C;figure></code></h2>
+<p>Предполагается, что элемент <code>&#x3C;figure></code> будет использоваться в сочетании с элементом <code>&#x3C;figcaption></code> для того, чтобы выделять диаграммы, иллюстрации, фотографии и примеры кода (помимо прочего). Вот что говорится о <code>&#x3C;figure></code> в спецификации:</p>
+<blockquote>
+<p>Элемент <code>&#x3C;figure></code> представляет собой фрагмент независимого содержимого, совсем необязательно с подписью, который как правило относится к отдельному элементу из основного содержимого документа, и может быть удалён из документа без ущерба его смыслу.
+<a href="http://dev.w3.org/html5/markup/figure.html">Спецификация W3C</a></p>
+</blockquote>
+<h2>Элемент <code>&#x3C;figcaption></code></h2>
+<p>Этот элемент стал <a href="http://adactio.com/journal/1604/">поводом</a> <a href="http://remysharp.com/2009/08/12/saving-figure-detail/">серьезных</a> <a href="http://html5doctor.com/legend-not-such-a-legend-anymore/">споров</a>. Спецификация изначально предлагала приспособить для этих целей элемент <code>&#x3C;legend></code>, вместо того, чтобы придумывать новый элемент. Были и другие предложения, включавшие <code>&#x3C;label></code>, <code>&#x3C;caption></code>, <code>&#x3C;p></code> и даже заголовки <code>&#x3C;h1></code>—<code>&#x3C;h6></code>. Семантика элемента <code>&#x3C;legend></code> <a href="http://html5doctor.com/legend-not-such-a-legend-anymore/">изменилась</a>, и поэтому мы начали использовать комбинацию <code>&#x3C;dt></code> и <code>&#x3C;dd></code> внутри <code>&#x3C;figure></code> по предложению <a href="http://twitter.com/adactio">Джереми</a>. Но большинство этих идей были отклонены из-за отсутствия обратной совместимости для CSS-оформления.</p>
+<p>Наши постоянные читатели знают, что недавно <a href="http://html5doctor.com/summary-figcaption-element/">был представлен новый элемент</a> <code>&#x3C;figcaption></code>. Кто знает, приживется ли он, а пока давайте узнаем, что о нём говорит спецификация:</p>
+<blockquote>
+<p>Элемент <code>&#x3C;figcaption></code> представляет собой заголовок или описание для <figure>.</p>
+<p><a href="http://dev.w3.org/html5/markup/figcaption.html">Спецификация W3C</a></p>
+</blockquote>
+<p>Элемент <code>&#x3C;figcaption></code> является необязательным и может появляться до <em>или</em> после содержимого внутри <code>&#x3C;figure></code>. Только один элемент <code>&#x3C;figcaption></code> может быть помещен в <code>&#x3C;figure></code>, хотя сам элемент <code>&#x3C;figure></code> может содержать несколько дочерних элементов (например, <code>&#x3C;img></code> или <code>&#x3C;code></code>).</p>
+<h2>Использование <code>&#x3C;figure></code> и <code>&#x3C;figcaption></code></h2>
+<p>Итак, мы узнали, что об этих элементах говорится в спецификации. Как же их использовать? Давайте рассмотрим это на примерах.</p>
+<h3><code>&#x3C;figure></code> для изображения</h3>
+<p>Изображение в элементе <code>&#x3C;figure></code> без подписи:</p>
+<figure>
+    
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 500px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 54.199999999999996%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAALABQDASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAQFA//EABUBAQEAAAAAAAAAAAAAAAAAAAIA/9oADAMBAAIQAxAAAAFR2Vsa8Twn/8QAGxAAAQQDAAAAAAAAAAAAAAAAAQACEiIDESH/2gAIAQEAAQUCGW0gmmpW+McY/wD/xAAUEQEAAAAAAAAAAAAAAAAAAAAQ/9oACAEDAQE/AT//xAAVEQEBAAAAAAAAAAAAAAAAAAAAIf/aAAgBAgEBPwFX/8QAGxAAAQQDAAAAAAAAAAAAAAAAAAEQIaExMlH/2gAIAQEABj8CnByzahX/AP/EABoQAQADAQEBAAAAAAAAAAAAAAEAEUEhMWH/2gAIAQEAAT8hOvnNHSBoAq9IYBQ+EYZLIb7Kvs//2gAMAwEAAgADAAAAEPsf/8QAFxEBAQEBAAAAAAAAAAAAAAAAAQARIf/aAAgBAwEBPxATOlt//8QAFREBAQAAAAAAAAAAAAAAAAAAAQD/2gAIAQIBAT8QSWf/xAAcEAEAAgEFAAAAAAAAAAAAAAABABEhMUFhcZH/2gAIAQEAAT8Qs1xcg7arNxgVaCox7T5LZUMgoY6BDRtwRU1gF9GIYR6G3BP/2Q==&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="&#x41C;&#x430;&#x43B;&#x44B;&#x448; &#x43E;&#x440;&#x430;&#x43D;&#x433;&#x443;&#x442;&#x430;&#x43D;&#x433;&#x430; &#x441;&#x432;&#x438;&#x441;&#x430;&#x435;&#x442; &#x441;&#xA0;&#x43A;&#x430;&#x43D;&#x430;&#x442;&#x430;." title="" src="/static/891c164ae2cc654e7e7334f4229d1987/69999/orang-utan.jpg" srcset="/static/891c164ae2cc654e7e7334f4229d1987/8a2bc/orang-utan.jpg 163w,
+/static/891c164ae2cc654e7e7334f4229d1987/f1944/orang-utan.jpg 325w,
+/static/891c164ae2cc654e7e7334f4229d1987/69999/orang-utan.jpg 500w" sizes="(max-width: 500px) 100vw, 500px">
+    </span>
+  </span>
+  
+</figure>
+<p>Вот код для этого:</p>
+<pre><code>&#x3C;figure>
+    &#x3C;img src="orang-utan.jpg"
+         alt="Малыш орангутанга свисает с каната.">
+&#x3C;/figure>
+</code></pre>
+<h3><code>&#x3C;figure></code> с изображением и подписью</h3>
+<p>Изображение внутри элемента <code>&#x3C;figure></code> с поясняющей подписью:</p>
+<figure>
+    
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 500px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 60%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAMABQDASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAEDBP/EABYBAQEBAAAAAAAAAAAAAAAAAAEAAv/aAAwDAQACEAMQAAABM7pigID/xAAaEAACAwEBAAAAAAAAAAAAAAABAgADEhET/9oACAEBAAEFAnw8KankI4zSo7SWn//EABQRAQAAAAAAAAAAAAAAAAAAABD/2gAIAQMBAT8BP//EABYRAQEBAAAAAAAAAAAAAAAAAAAhMf/aAAgBAgEBPwHFf//EABwQAAICAgMAAAAAAAAAAAAAAAAxAREhUTJBov/aAAgBAQAGPwKxLRx9GOy50Qkf/8QAGhABAAMBAQEAAAAAAAAAAAAAAQARITFBcf/aAAgBAQABPyEYzXo7DTXhxTBLx2aty2uVWkPwD4n/2gAMAwEAAgADAAAAEMvP/8QAFREBAQAAAAAAAAAAAAAAAAAAERD/2gAIAQMBAT8QSf/EABgRAAMBAQAAAAAAAAAAAAAAAAABETHw/9oACAECAQE/EG3snKf/xAAcEAEBAAMAAwEAAAAAAAAAAAABEQAhUTFBcWH/2gAIAQEAAT8QaDqlGz0MgKKg9l106uIO5UpYfdYFVKl8zw/cBIrv8znMsO3u8//Z&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="&#x41C;&#x430;&#x43A;&#x430;&#x43A;&#x430; &#x43D;&#x430; &#x434;&#x435;&#x440;&#x435;&#x432;&#x435;." title="" src="/static/555bf6bd0046041dc10071a112b68699/69999/macaque.jpg" srcset="/static/555bf6bd0046041dc10071a112b68699/8a2bc/macaque.jpg 163w,
+/static/555bf6bd0046041dc10071a112b68699/f1944/macaque.jpg 325w,
+/static/555bf6bd0046041dc10071a112b68699/69999/macaque.jpg 500w" sizes="(max-width: 500px) 100vw, 500px">
+    </span>
+  </span>
+  
+    <figcaption>&#x41D;&#x430;&#x433;&#x43B;&#x430;&#x44F; &#x43C;&#x430;&#x43A;&#x430;&#x43A;&#x430; &#x438;&#x437; &#x411;&#x43E;&#x440;&#x43D;&#x435;&#x43E;. &#x424;&#x43E;&#x442;&#x43E; <a href="http://www.flickr.com/photos/rclark/102352241/in/set-72057594082373448/">&#x420;&#x438;&#x447;&#x430;&#x440;&#x434;&#x430; &#x41A;&#x43B;&#x430;&#x440;&#x43A;&#x430;</a></figcaption>
+</figure>
+<p>И код, который мы использовали:</p>
+<pre><code>&#x3C;figure>
+    &#x3C;img src="macaque.jpg" alt="Макака на дереве.">
+    &#x3C;figcaption>
+        Наглая макака из Борнео.
+        Фото &#x3C;a href="…">Ричарда Кларка&#x3C;/a>
+    &#x3C;/figcaption>
+&#x3C;/figure>
+</code></pre>
+<h3><code>&#x3C;figure></code> с несколькими изображениями</h3>
+<p>Размещение нескольких изображений внутри одного элемента <code>&#x3C;figure></code> с общей подписью:</p>
+<figure>
+    
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 165px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 145.45454545454547%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAdABQDASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAAMFBAL/xAAVAQEBAAAAAAAAAAAAAAAAAAABAv/aAAwDAQACEAMQAAABmu2MmoQ8DVSzMKkHAz//xAAdEAACAwACAwAAAAAAAAAAAAABAgADBBESECIx/9oACAEBAAEFAqUaw2ZrF8V5wyN3pNnBf25sJOXsDMqB5sYz5P/EABYRAQEBAAAAAAAAAAAAAAAAABABEf/aAAgBAwEBPwHCn//EABQRAQAAAAAAAAAAAAAAAAAAACD/2gAIAQIBAT8BH//EAB8QAAICAgEFAAAAAAAAAAAAAAABAhIQITERIjJBUf/aAAgBAQAGPwKp15WFWR5dr+jZp1LPk3EsyMPTx//EABoQAAMBAQEBAAAAAAAAAAAAAAABESExQWH/2gAIAQEAAT8hm7mWsSxFeojMDH1tCQO0eKSyIqcwZMUVHE9fjGPePF4LR4Vj1D//2gAMAwEAAgADAAAAEFP2fP/EABcRAQEBAQAAAAAAAAAAAAAAAAARATH/2gAIAQMBAT8Qyuo0r//EABcRAAMBAAAAAAAAAAAAAAAAAAABERD/2gAIAQIBAT8QbLlP/8QAHhABAQACAgMBAQAAAAAAAAAAAREAIUFRMWGBcfD/2gAIAQEAAT8QUiNItBlWf3KZe7CMR4yihPLXr1Msex0Pv3BHVTU8s25ZU7Bi54xXXngp7ywJHoxBtfou8YiHPyyQykGw7z//2Q==&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="&#x41A;&#x443;&#x43A;&#x430;&#x431;&#x430;&#x440;&#x430;." title="" src="/static/29244c618844f1a0e936557a9d97c32c/bfd69/kookaburra.jpg" srcset="/static/29244c618844f1a0e936557a9d97c32c/8534c/kookaburra.jpg 163w,
+/static/29244c618844f1a0e936557a9d97c32c/bfd69/kookaburra.jpg 165w" sizes="(max-width: 165px) 100vw, 165px">
+    </span>
+  </span>
+  
+    
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 165px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 145.45454545454547%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAdABQDASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAAEDBAL/xAAWAQEBAQAAAAAAAAAAAAAAAAABAgD/2gAMAwEAAhADEAAAAWnKa7OB0c2kliaAf//EABoQAAIDAQEAAAAAAAAAAAAAAAECAAMREBL/2gAIAQEAAQUCL4/MDn2pM3Y1axbGyBc5/8QAFxEBAAMAAAAAAAAAAAAAAAAAABARMf/aAAgBAwEBPwGNU//EABcRAQADAAAAAAAAAAAAAAAAAAAQETH/2gAIAQIBAT8BjFv/xAAcEAABBAMBAAAAAAAAAAAAAAABABARISAxMkH/2gAIAQEABj8CA8eF1b0YWsP/xAAbEAEBAAMBAQEAAAAAAAAAAAABABExQSFhgf/aAAgBAQABPyHNJldndm9FwV+XnAYzkeju2mUEjljtlYGu78L/2gAMAwEAAgADAAAAEEzWjP/EABcRAAMBAAAAAAAAAAAAAAAAAAABERD/2gAIAQMBAT8QIRYf/8QAGBEAAwEBAAAAAAAAAAAAAAAAAAEREEH/2gAIAQIBAT8QpRvrP//EAB4QAQACAwACAwAAAAAAAAAAAAEAESExQRBRYZHB/9oACAEBAAE/EMPbLGzPI8vAJczB0Kf2oN9kB72ns27M4ENF7EXtAHJEwvD5QTaovqXAUq5l3v6J/9k=&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="&#x41F;&#x435;&#x43B;&#x438;&#x43A;&#x430;&#x43D; &#x43D;&#x430; &#x43F;&#x43B;&#x44F;&#x436;&#x435;." title="" src="/static/4eb3e03bd63be17d0c0fc5ebfe3db1bd/bfd69/pelican.jpg" srcset="/static/4eb3e03bd63be17d0c0fc5ebfe3db1bd/8534c/pelican.jpg 163w,
+/static/4eb3e03bd63be17d0c0fc5ebfe3db1bd/bfd69/pelican.jpg 165w" sizes="(max-width: 165px) 100vw, 165px">
+    </span>
+  </span>
+  
+    
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 165px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 145.45454545454547%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAdABQDASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAAMFBgT/xAAWAQEBAQAAAAAAAAAAAAAAAAABAwL/2gAMAwEAAhADEAAAAU0JDMVqkoBvOylSeeNOL//EAB0QAAICAgMBAAAAAAAAAAAAAAACAQMEERITISL/2gAIAQEAAQUColRMiWJusg4Ctoa31V8tqnZGTYpU/cs/J//EABoRAAICAwAAAAAAAAAAAAAAAAECAAMQETH/2gAIAQMBAT8BqUN2FNHP/8QAGREAAgMBAAAAAAAAAAAAAAAAAAECECER/9oACAECAQE/AZPME5V0/8QAGxABAAICAwAAAAAAAAAAAAAAABFBAjEBECL/2gAIAQEABj8CqW1OO8U4tIp6Q//EABwQAQACAgMBAAAAAAAAAAAAAAEAESFBMVFhkf/aAAgBAQABPyGg1gy3GqwNNRSpDRds48ToxFfZdk06lpyvk5UI7mSseXBiMlbJ/9oADAMBAAIAAwAAABCM0ED/xAAYEQEBAAMAAAAAAAAAAAAAAAABABFRwf/aAAgBAwEBPxBZI6ByNWL/xAAXEQEBAQEAAAAAAAAAAAAAAAABEQAx/9oACAECAQE/EGI6ygppNW//xAAdEAEAAwACAwEAAAAAAAAAAAABABEhMUFRYXGR/9oACAEBAAE/EFsEFD1+RDVZWj9iN3TviHcp2TqIxoB3cE8998QjipZxgnFFaUD6nCA/UbplAG19jVwLSGk2ajFCh44n/9k=&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="&#x41D;&#x430;&#x433;&#x43B;&#x44B;&#x439; &#x43C;&#x43D;&#x43E;&#x433;&#x43E;&#x446;&#x432;&#x435;&#x442;&#x43D;&#x44B;&#x439; &#x43B;&#x43E;&#x440;&#x438;&#x43A;&#x435;&#x442;." title="" src="/static/aa77de320f9024623a64080783529a9f/bfd69/lorikeet.jpg" srcset="/static/aa77de320f9024623a64080783529a9f/8534c/lorikeet.jpg 163w,
+/static/aa77de320f9024623a64080783529a9f/bfd69/lorikeet.jpg 165w" sizes="(max-width: 165px) 100vw, 165px">
+    </span>
+  </span>
+  
+    <figcaption>
+        &#x421;&#x43B;&#x435;&#x432;&#x430; &#x43D;&#x430;&#x43F;&#x440;&#x430;&#x432;&#x43E;: &#x43A;&#x443;&#x43A;&#x430;&#x431;&#x430;&#x440;&#x430;, &#x43F;&#x435;&#x43B;&#x438;&#x43A;&#x430;&#x43D; &#x438; &#x43C;&#x43D;&#x43E;&#x433;&#x43E;&#x446;&#x432;&#x435;&#x442;&#x43D;&#x44B;&#x439; &#x43B;&#x43E;&#x440;&#x438;&#x43A;&#x435;&#x442;.
+        &#x424;&#x43E;&#x442;&#x43E;&#x433;&#x440;&#x430;&#x444;&#x438;&#x438; <a href="http://www.flickr.com/photos/rclark/">&#x420;&#x438;&#x447;&#x430;&#x440;&#x434;&#x430; &#x41A;&#x43B;&#x430;&#x440;&#x43A;&#x430;</a>
+    </figcaption>
+</figure>
+<p>И сам код:</p>
+<pre><code>&#x3C;figure>
+    &#x3C;img src="kookaburra.jpg" alt="Кукабара.">
+    &#x3C;img src="pelican.jpg" alt="Пеликан на пляже.">
+    &#x3C;img src="lorikeet.jpg" alt="Наглый многоцветный лорикет.">
+    &#x3C;figcaption>
+        Слева направо: кукабара, пеликан и многоцветный лорикет.
+        Фотографии &#x3C;a href="…">Ричарда Кларка&#x3C;/a>
+    &#x3C;/figcaption>
+&#x3C;/figure>
+</code></pre>
+<h3><code>&#x3C;figure></code> с блоком кода</h3>
+<p>Элемент <code>&#x3C;figure></code> может быть также использован для примеров кода:</p>
+<figure>
+    <blockquote>
+        <p><code><small>
+            <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">
+                Creative Commons Attribution Share-alike license
+            </a>
+        </small></code></p>
+    </blockquote>
+    <figcaption>
+        Использование элемента <code>&lt;small&gt;</code> вокруг ссылки на лицензию Creative Commons с <code>rel="license"</code>.
+    </figcaption>
+</figure>
+<p>Ниже приведен код для этого:</p>
+<pre><code>&#x3C;figure>
+    &#x3C;blockquote>
+        &#x3C;p>&#x3C;code>&#x3C;small>
+            &#x3C;a rel="license" href="…">
+                Creative Commons Attribution Share-alike license
+            &#x3C;/a>
+        &#x3C;/small>&#x3C;/code>&#x3C;/p>
+    &#x3C;/blockquote>
+    &#x3C;figcaption>
+        Использование элемента &#x3C;code>&#x26;lt;small&#x26;gt;&#x3C;/code>
+        вокруг ссылки на лицензию Creative Commons
+        с &#x3C;code>rel="license"&#x3C;/code>.
+    &#x3C;/figcaption>
+&#x3C;/figure>
+</code></pre>
+<h3>Различия между <code>&#x3C;figure></code> и <code>&#x3C;aside></code></h3>
+<p>Мы уже говорили об элементе <code>&#x3C;aside></code> <a href="http://html5doctor.com/aside-revisited/">в предыдущей статье</a>, но важно отметить разницу между ними. При выборе между <code>&#x3C;aside></code> или <code>&#x3C;figure></code>, стоит спросить себя, имеет ли содержимое элемента важное значение для понимания содержимого:</p>
+<ul>
+<li>Если содержимое просто имеет отношение и не является существенным, то используйте <code>&#x3C;aside></code>.</li>
+<li>Если содержимое является важным, но его положение в потоке общего содержимого не так важно, используется элемент <code>&#x3C;figure></code>.</li>
+</ul>
+<p>Обратите внимание, что если положение содержимого в тексте тесно связано с предыдущим и последующим содержимым, следует использовать более подходящие элементы — например, <code>&#x3C;div></code>, старый добрый <code>&#x3C;img></code>, <code>&#x3C;blockquote></code>, или даже <code>&#x3C;canvas></code>, в зависимости от типа содержимого.</p>
+<h2>Не останавливайтесь на достигнутом!</h2>
+<p>Не стоит ограничивать использование <code>&#x3C;figure></code> изображениями и примерами кода. Другим содержимым, подходящим по смыслу для использования в элементе <code>&#x3C;figure></code> может быть аудио, видео, графики (возможно, с использованием <code>&#x3C;canvas></code> или <code>&#x3C;svg></code>), стихи или таблицы со статистикой.</p>
+<p>Однако использование элемента <code>&#x3C;figure></code> не всегда целесообразно. Например, графический баннер не стоит размечать в <code>&#x3C;figure></code>. Используйте для этого просто <code>&#x3C;img></code>.</p>
+<h2>Вывод</h2>
+<p>Как мы продемонстрировали в этой статье, элемент <code>&#x3C;figure></code> открывает много возможностей. Только не забудьте убедиться, что он подходходит для конкретного случая. Хотя вряд ли вы бездумно относитесь к разметке, так ведь?</p>
+<p>Перевод оригинальной статьи «<a href="http://html5doctor.com/the-figure-figcaption-elements/">The figure &#x26; figcaption elements</a>» <a href="http://richclarkdesign.com/">Ричарда Кларка</a> (Richard Clark), опубликованной на сайте <a href="http://html5doctor.com/">HTML5Doctor.com</a>.</p>
+<p>Перевод выполнила Екатерина Мордвина.</p></div></main><footer class="footer"><p>2018 © Веб-стандарты</p></footer></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.page={"componentChunkName":"component---src-templates-article-jsx","jsonName":"articles-figure-figcaption-0a5","path":"/articles/figure-figcaption/"};window.dataPath="148/path---articles-figure-figcaption-0-a-5-4f5-3Zuh463vkaCSjY9s1l3zMZdk6Og";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-fdf6317c57abdf654ada.js"],"component---src-templates-article-list-jsx":["/component---src-templates-article-list-jsx-d6fdd15edf4f8b89c17b.js"],"component---src-templates-article-jsx":["/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"],"component---src-pages-404-jsx":["/component---src-pages-404-jsx-a85f47ff49f987715412.js"],"component---src-pages-events-jsx":["/component---src-pages-events-jsx-4f883960193822a95f04.js"],"component---src-pages-index-jsx":["/component---src-pages-index-jsx-6d406cab1d4cc5f63755.js"]};/*]]>*/</script><script src="/webpack-runtime-1400fd0a68f967e222fb.js" async=""></script><script src="/app-fdf6317c57abdf654ada.js" async=""></script><script src="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js" async=""></script><script src="/0-152a6e34a5c4bf7cd8a5.js" async=""></script></body></html>

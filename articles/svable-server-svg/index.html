@@ -1,0 +1,153 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="generator" content="Gatsby 2.0.1"/><title data-react-helmet="true">Веб-стандарты</title><meta data-react-helmet="true" name="description" content="Сообщество разработчиков «Веб-стандарты»"/><meta data-react-helmet="true" name="keywords" content="web standards"/><link as="script" rel="preload" href="/0-152a6e34a5c4bf7cd8a5.js"/><link as="script" rel="preload" href="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"/><link as="script" rel="preload" href="/app-fdf6317c57abdf654ada.js"/><link as="script" rel="preload" href="/webpack-runtime-1400fd0a68f967e222fb.js"/><link rel="preload" href="/static/d/207/path---articles-svable-server-svg-8-ad-437-si5UVhTPoACNkpM650mPCXjcxK4.json" as="fetch" crossOrigin="use-credentials"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><header class="header"><h1>Веб-стандарты</h1></header><main><h1>Svable — простая генерация SVG на сервере</h1><time>13 декабря 2013</time><div><h1>Svable — простая генерация SVG на сервере</h1>
+<p><a href="http://svable.com/">Илья Заяц</a> 13 декабря 2013</p>
+<p><em>Мы начинаем серию статей, в которых вы можете рассказать о своём сервисе или разработке, которые могут быть полезны для фронтенд-разработчиков. Есть о чём рассказать? Пишите нам на <a href="mailto:wst@web-standards.ru">wst@web-standards.ru</a>. Редакция.</em></p>
+<p>Рассказывать про актуальность векторной графики уже нет никакого смысла — количеством различных размеров, разрешений (а теперь еще и плотностей) экранов веб-разработчика не удивишь. А вот вопрос подготовки и создания изображений для всего этого разнообразия набирает актуальность с каждым днем. В этой статье я хочу рассказать не о том, как научить дизайнера использовать Illustrator, а о том, как облегчить жизнь разработчика при работе с SVG.</p>
+<p>В последнее время SVG начинают использовать не только в качестве замены растра для иконок и логотипов начинает, но и для создания сложной графики и динамических диаграмм. За это нужно сказать спасибо множеству отличных JavaScript-библиотек, которые позволяют реализовывать все фантазии дизайнеров быстро и легко: Raphaël, Snap.svg, SVG.js, а также тех, что визуализируют разнообразные данные в любом вообразимом виде: D3, Highcharts, GRaphaël.</p>
+<p>Но я говорил об облегчении жизни разработчиков: в чем она нелегка, если хороших инструментов так много? Проблемы начинаются, когда перед программистами ставится одна из следующих задач:</p>
+<ul>
+<li>отрисовать графики на сервере, чтобы вставить в email-рассылку;</li>
+<li>закэшировать результат, потому что каждая отрисовка очередного сложного изображения «подвешивает» браузер на слабой машине;</li>
+<li>дать пользователю возможность скачать файл в PNG или PDF.</li>
+</ul>
+<p>Очевидно, основное преимущество всех этих библиотек становится их самым большим минусом — они работают только в браузере.</p>
+<p>Решения этой проблемы уж больно прямолинейные — перетащить браузер на сервер. Тут и решения «headless», например, у <a href="http://www.highcharts.com/component/content/article/2-news/52-serverside-generated-charts">highcharts</a> или <a href="http://mir.aculo.us/2013/04/30/embed-canvas-and-svg-charts-in-emails/">freckle</a>, или попытки перенести <a href="https://github.com/dodo/node-raphael">DOM в Node.js для Raphaël</a>.</p>
+<p>Это работает, но инфраструктура для столь небольших потребностей получается монструозной, сложной и часто медленной.</p>
+<p>Почему же тогда просто не использовать сторонние серверные библиотеки? Ни один программист в мире не захочет поддерживать две реализации одного и того же на двух разных языках. Это ведет к ошибкам, дополнительным сложностям и высокой итоговой стоимости поддержки и разработки новой функциональности.</p>
+<p>Мы все это понимаем, поэтому и создали <a href="http://svable.com" title="Svable">Svable</a>. Это сервис, который позволит вам перенести всю вашу существующую генерацию SVG из браузера на сервер или запускать один и тот же код как на клиенте, так и на сервере.</p>
+<p>Как это реализуется? Система состоит из двух частей: самой платформы и адаптеров. Платформа — это API, который принимает на вход специально сформированный JSON с высокоуровневыми командами, вроде: <code>rect</code>, <code>circle</code>, <code>getBBox</code> и т.д. В ответ вы получаете результирующий SVG, PDF или PNG. Мы конвертируем результат, если вам это нужно.</p>
+<p>Возьмем для примера <a href="http://codepen.io/anon/pen/jiHkq">вот этот SVG</a>. Как видим, это круг с полупрозрачным <code>stroke</code> и белым квадратом, который рисуется ровно по центру этого круга. И все это на фоне белого прямоугольника с закругленными краями. Допустим, нам позарез нужно отрисовать подобное на сервере. Для этого потребуется сформировать POST-запрос на наш сервис со следующим JSON:</p>
+<pre><code>{
+    'paper': {
+    'attrs': [ { 'width': '640' }, { 'height': '480' }],
+    'access_key': 'my_key',
+    'format': 'svg',
+    'children': [
+        {
+        'type': 'rect',
+        'attrs': [
+            { 'x': '0' },
+            { 'y': '0' },
+            { 'width': '640' },
+            { 'height': '480' },
+            { 'rx': '10' },
+            { 'fill': '#fff' }
+        ]},
+        {
+        'type': 'circle',
+        'svable_id': 'main_circle',
+        'attrs': [
+            { 'cx': '320' },
+            { 'cy': '240' },
+            { 'r': '60' },
+            { 'fill': '#223fa3' },
+            { 'stroke': '#000000' },
+            { 'stroke-width': '80' },
+            { 'stroke-opacity': '0.5' }
+        ]},
+        {
+        'type': 'rect',
+        'attrs': [
+            { 'x': 'main_circle.cx - 10' },
+            { 'y': 'main_circle.cy - 10' },
+            { 'fill': '#fff' },
+            { 'width': '20' },
+            { 'height': '20' }
+        ]}
+    ]}
+}
+</code></pre>
+<p>Разберем его по частям: в корневом объекте <code>paper</code> вы описываете размеры вашего полотна, <code>viewBox</code>, а также указываете ваш персональный ключ доступа и растровый формат (по умолчанию в ответ вам придет SVG):</p>
+<pre><code>'paper': {
+    'attrs': [{ 'width': '640' }, { 'height': '480' }],
+    'access_key': 'my_key',
+    'format': 'svg',
+</code></pre>
+<p>В массиве <code>children</code> указываются все объекты, которые попадут на ваш холст. Первым из них идет фоновый прямоугольник. Тут все достаточно просто и почти один в один повторяет формат самого SVG-документа:</p>
+<pre><code>'type': 'rect',
+'attrs': [
+    { 'x': '0' },
+    { 'y': '0' },
+    { 'width': '640' },
+    { 'height': '480' },
+    { 'rx': '10' },
+    { 'fill': '#fff' }
+]
+</code></pre>
+<p>Далее опишем круг. Тут все тоже довольно банально, но есть одно отличие — атрибут <code>svable_id</code>, который позволит вам сослаться конкретно на этот объект в тот момент, когда вам понадобятся любые его параметры:</p>
+<pre><code>'type': 'circle',
+'svable_id': 'main_circle',
+'attrs': [
+    { 'cx': '320' },
+    { 'cy': '240' },
+    { 'r': '60' },
+    { 'fill': '#223fa3' },
+    { 'stroke': '#000000' },
+    { 'stroke-width': '80' },
+    { 'stroke-opacity': '0.5' }
+]
+</code></pre>
+<p>Затем опишем последний квадрат. Напомним, что он должен позиционироваться относительно центра круга. Тут вам и пригодится то, что вы указали в <code>svable_id</code>:</p>
+<pre><code>'type': 'rect',
+'attrs': [
+    { 'x': 'main_circle.cx - 10' },
+    { 'y': 'main_circle.cy - 10' },
+    { 'fill': '#fff' },
+    { 'width': '20' },
+    { 'height': '20' }
+]
+</code></pre>
+<p>Однако обычно никто не рисует SVG на сервере с нуля. Поэтому мы создали адаптеры под популярные JavaScript-библиотеки: уже готов Raphaël, завершаем работу над Snap.svg и D3.</p>
+<p>Адаптеры как раз занимаются тем, что преобразовывают код, написанный для браузерных библиотек в JSON, который понимает наша платформа. В итоге вы легко можете запускать свой код там, где вам сейчас это выгодно, лишь вызовите адаптер в нужный момент.</p>
+<p>Возьмем уже знакомый нам SVG и <a href="http://codepen.io/anon/pen/iJext">отрисуем с помощью Raphaël</a>:</p>
+<pre><code>var paper = Raphael(0, 0, 640, 480);
+    paper
+        .rect(0, 0, 640, 480, 10)
+        .attr({
+            fill: '#fff',
+            stroke: 'none'
+});
+var circle = paper
+    .circle(320, 240, 60)
+    .attr({
+        fill: '#223fa3',
+        stroke: '#000',
+        'stroke-width': 80,
+        'stroke-opacity': 0.5
+});
+paper
+    .rect(circle.attr('cx') - 10, circle.attr('cy') - 10, 20, 20)
+    .attr({
+        fill: '#fff',
+        stroke: 'none'
+});
+</code></pre>
+<p>А теперь перенесем его на сервер и <a href="http://codepen.io/anon/pen/woJgA">отрисуем с помощью Node.js</a>:</p>
+<pre><code>var Svable = require('svable');
+var paper = Svable(0, 0, 640, 480, 'raphael');
+paper
+    .rect(0, 0, 640, 480, 10)
+    .attr({
+    fill: '#fff',
+    stroke: 'none'
+});
+var circle = paper
+    .circle(320, 240, 60)
+    .attr({
+        fill: '#223fa3',
+        stroke: '#000',
+        'stroke-width': 80,
+        'stroke-opacity': 0.5
+});
+paper
+    .rect(circle.attr('cx') - 10, circle.attr('cy') - 10, 20, 20)
+    .attr({
+        fill: '#fff',
+        stroke: 'none'
+});
+console.log(paper.burnSync());
+</code></pre>
+<p>Как видите, вся разница лишь в первоначальном вызове объекта и итоговом получении результата.</p>
+<p>В данном случае вызов <code>paper.burnSync()</code> синхронно вернет нам необходимый XML, с которым вы уже можете поступить как захотите. Любители асинхронности могут воспользоваться методом <code>burn</code> — он возвращает промис.</p>
+<p>Таким образом, вы получаете возможность вставить итоговый файл в почтовую рассылку, отдать пользователю на скачивание, сохранить на сервере, чтобы в следующий раз сэкономить как время пользователя, так и деньги на генерации, и все это без дублирования кода и страданий программистов.</p>
+<p>Мы сейчас находимся на финальной стадии разработки, и нам нужны первые клиенты со сложными задачами для пробных интеграций. Мы не только решим их проблемы, но и дадим выгодные условия на время бета-теста. Напишите нам, обсудим конкретно ваш случай: <a href="http://svable.com/">svable.com</a>.</p>
+<p>Редактура <a href="http://pepelsbey.net/">Вадима Макеева</a> и <a href="http://engel-t.moikrug.ru/">Ольги Алексашенко</a>.</p></div></main><footer class="footer"><p>2018 © Веб-стандарты</p></footer></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.page={"componentChunkName":"component---src-templates-article-jsx","jsonName":"articles-svable-server-svg-8ad","path":"/articles/svable-server-svg/"};window.dataPath="207/path---articles-svable-server-svg-8-ad-437-si5UVhTPoACNkpM650mPCXjcxK4";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-fdf6317c57abdf654ada.js"],"component---src-templates-article-list-jsx":["/component---src-templates-article-list-jsx-d6fdd15edf4f8b89c17b.js"],"component---src-templates-article-jsx":["/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"],"component---src-pages-404-jsx":["/component---src-pages-404-jsx-a85f47ff49f987715412.js"],"component---src-pages-events-jsx":["/component---src-pages-events-jsx-4f883960193822a95f04.js"],"component---src-pages-index-jsx":["/component---src-pages-index-jsx-6d406cab1d4cc5f63755.js"]};/*]]>*/</script><script src="/webpack-runtime-1400fd0a68f967e222fb.js" async=""></script><script src="/app-fdf6317c57abdf654ada.js" async=""></script><script src="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js" async=""></script><script src="/0-152a6e34a5c4bf7cd8a5.js" async=""></script></body></html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="generator" content="Gatsby 2.0.1"/><title data-react-helmet="true">Веб-стандарты</title><meta data-react-helmet="true" name="description" content="Сообщество разработчиков «Веб-стандарты»"/><meta data-react-helmet="true" name="keywords" content="web standards"/><link as="script" rel="preload" href="/0-152a6e34a5c4bf7cd8a5.js"/><link as="script" rel="preload" href="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"/><link as="script" rel="preload" href="/app-fdf6317c57abdf654ada.js"/><link as="script" rel="preload" href="/webpack-runtime-1400fd0a68f967e222fb.js"/><link rel="preload" href="/static/d/947/path---articles-multiline-css-0-db-89a-QI0wWBwrWHJisEbcbb36rapA.json" as="fetch" crossOrigin="use-credentials"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><header class="header"><h1>Веб-стандарты</h1></header><main><h1>Преимущества многострочного CSS</h1><time>13 декабря 2010</time><div><h1>Преимущества многострочного CSS</h1>
+<p><a href="http://miripiruni.org/">Вячеслав Олиянчук</a> 13 декабря 2010</p>
+<p>Предлагаю вашему вниманию моё видение наиболее удобной методики форматирования CSS-кода. Я знаю, что вопрос этот достаточно холиварный, однако материалов, статей или другого рода информации по этому вопросу очень мало, поэтому я постараюсь аргументированно раскрыть причины существования как многострочного, так и однострочного форматирования, рассказать о том, к чему приводит применение каждого из них и проанализировать, помогает или мешает выбранный стиль в работе.</p>
+<p>Для начала определимся в терминологии. В CSS-коде у нас есть: блок правил — селектор и список правил для него; каждое правило состоит из свойства и его значения.</p>
+<p>Есть два варианта форматирования CSS-кода, иначе говоря, расположения правил: однострочный и многострочный, а также их комбинации. Однострочное форматирование, правила для селектора записаны в одну строку:</p>
+<pre><code>.example { position: absolute; top: 10px; display: block; width: 10px; height: 10px; background: url(icon.png) no-repeat }
+</code></pre>
+<p>Многострочное форматирование, каждая пара <code>свойство: значение</code> на новой строке:</p>
+<pre><code>.example {
+    position: absolute;
+    top: 10px;
+    display: block;
+    width: 10px;
+    height: 10px;
+    background: url(icon.png) no-repeat;
+}
+</code></pre>
+<p>Однострочный способ хорош в «наборах», «батареях» селекторов с одинаковыми свойствами. Например, там, где одно свойство принимает разные значения:</p>
+<pre><code>.tag-cloud .xs    { font-size: 0.5em }
+.tag-cloud .s     { font-size: 0.75em }
+.tag-cloud .m     { font-size: 1em }
+.tag-cloud .l     { font-size: 1.25em }
+.tag-cloud .xl    { font-size: 1.5em }
+.tag-cloud .xxl   { font-size: 1.75em }
+</code></pre>
+<p>Многострочный: перфекционистский, безопасный, наглядный. Давайте разберем по порядку все его преимущества.</p>
+<h2>Анализ</h2>
+<p>Работа с кодом — это операции написания, поиска и редактирования текста. Чтобы работать результативно, нужно преследовать две цели:</p>
+<h3>Цель №1: минимизация шанса на ошибку</h3>
+<p>Некоторые из ошибок бывают вполне безобидны (вроде дублирования одного и того же свойства или одновременного использования двух взаимоисключающих), а некоторые могут быть критичны. Например, ошибочное переопределение или опечатка, которая блокирует работу следующих свойств.</p>
+<h3>Цель №2: скорость восприятия свойств</h3>
+<p>Основной труд при написании CSS файла — это объявление значений определенных свойств. Значит, нужно иметь набор этих свойств наглядно и под рукой, в рамках одного селектора.</p>
+<p>Разве вам нужно следить за огромным количеством строк одновременно? Посмотрите, например, как думает программист, пишущий новую функцию. Его внимание сосредоточено только на этой функции. Так и у верстальщика — работа идет одновременно только с одним селектором. Столбик — самая наглядная запись. Он является потомком примитивного <em>списка в столбик</em>. Вы же не будете отрицать, что вытянутые в строку элементы списка теряют в доступности?</p>
+<p>Например, довольно трудно найти отдельный элемент этого списка:</p>
+<pre><code>Я полюбил { Машеньку: болтушку; Юшечку: тихоню; Лизоньку: умницу; Алиночку: скромницу; }
+</code></pre>
+<p>Гораздо проще найти нужный нам пункт в таком виде:</p>
+<pre><code>Я полюбил {
+    Машеньку: болтушку;
+    Юшечку: тихоню;
+    Лизоньку: умницу;
+    Алиночку: скромницу;
+}
+</code></pre>
+<p>Не нужно думать, что HTML-верстка это нечто обособленное в плане написания кода. Обратите внимание на практики, которые используют программисты, пишущие на JavaScript, PHP или Perl. Пара <code>свойство:значение</code> в CSS — это объявление той же переменной, только с ограниченным вариантом значений.</p>
+<p>Пример JavaScript-кода:</p>
+<pre><code>function example() {
+    var position = 'absolute', display = 'block', width = 10, height = 10, background = 'icon.png';
+    // …
+}
+</code></pre>
+<p>То же самое, но в традиционном для JavaScript стиле форматирования:</p>
+<pre><code>function example() {
+    var position = 'absolute',
+        display = 'block',
+        width = 10,
+        height = 10,
+        background = 'icon.png';
+    // …
+}
+</code></pre>
+<p>Теперь давайте вернёмся и еще раз перечитаем как <a href="#target-2">сформулирована цель №2</a>: ключевое слово <em>«свойства»</em>. Нам не так часто приходится править селектор или расположение блоков с селекторами, но очень часто приходится править набор правил, иметь ввиду значение свойств, следить, какие уже объявлены, а каких еще нет. Именно поэтому важно <strong>сконцентрировать</strong> свое внимание на наборе правил.</p>
+<h2>Автоматизация</h2>
+<p>Помимо привычного нам ручного копания в коде, можно использовать автоматические решения. Далее речь пойдет о тех приемах, которые каждый способен применять в IntelliJ IDEA. Возможно, ваш любимый редактор кода тоже способен на нечто подобное.</p>
+<p>Среди автоматических способов решения проблем первым стоит упомянуть построчную валидацию CSS-свойств в рамках селектора. Пусть машина помогает вам находить опечатки и проблемные фрагменты кода:</p>
+
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 510px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 51.37254901960784%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAIAAAA7N+mxAAAACXBIWXMAAAsSAAALEgHS3X78AAABXElEQVQoz42PbU+kMBCA+f9/6cyd7unpLnHdrN6+QIFloduClNJCodA39zw/mBijTyaTSWaezIy3z0AAgu1mHwQhxhjWRZIe4zA6wRPnLaU1+YSqLL1TdkToBOJicY+Wa/IYwLunvweYTdOktT7n8QNSSqUNeVx5ZZ7LoZ+U89d2FwnMnrmi3dhZ6z7DvvZ403gwjqvnUml3NTdXC367DWk9KGWc+0JmjHkwSTBCWtuKKspcw01RtnJU35JREnHGSS1qKggVQvTuK97ktvUgCDhnhI6/r9Ofs2gzv2cPP0QB7euU+/+6fV/bNxnnXr7f9b0Yh/bmtpz72XJzV1epVt84mxw8DFZyqJo6ubg8/prBP/56C3AaJ+Bpi8HOpisTP5jQN8A38dIcVjZcTPnGOcFI9O/spqnlOKW5zJDBhS2IQBUeukEKYfrO9MJ0/BxatKZvjWhVL87rKcpfAPEoNIMDXcvlAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="validation" title="" src="/static/8e8a547585071a4f1d1a55ee0c7a52a0/fa387/validation.png" srcset="/static/8e8a547585071a4f1d1a55ee0c7a52a0/844a8/validation.png 163w,
+/static/8e8a547585071a4f1d1a55ee0c7a52a0/fe46c/validation.png 325w,
+/static/8e8a547585071a4f1d1a55ee0c7a52a0/fa387/validation.png 510w" sizes="(max-width: 510px) 100vw, 510px">
+    </span>
+  </span>
+  
+<p>При многострочном форматировании сложнее пропустить:</p>
+<ul>
+<li>переопределение одного правила другим и уже объявленное правило;</li>
+<li>пропущенную <code>;</code> в последовательности правил;</li>
+<li>незаметные опечатки, вроде <code>height</code> и <code>heigth</code>;</li>
+<li>хаки.</li>
+</ul>
+<h3>Визуализация цветов</h3>
+<p>У каждой строки с использованием цветового кода мой редактор визуализирует цвет. Это нагляднее. Привлекает внимание быстрее. Еще один способ быстро найти нужное.</p>
+
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 510px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 89.60784313725489%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAASCAIAAADUsmlHAAAACXBIWXMAAAsSAAALEgHS3X78AAACOklEQVQ4y32T2XbaMBCGef/H6W1z0ZwQAsSGxCmkJCBsbIwXSZZ3a68IkNIszNHF2Gc+za9fo55n91HqdxRvt97Gj3KScJYzmlNGlCy0KrQuTCJEfr6kLJoG9rzJHcGRVC3tCmdeXQ/rp0U3f81++0+wCXAOwx2sqlxrqnV3tiilZQ+MRyhFnAuttRcI5492t7UP05oXJa+KukW4a1quP4Whe641hmlqMvNdFPUSELCp46QhRDKm9Pexh5d3A5SmUh3q1MtK/bjS40d+NcrcJAxLP8gisM48nyilPsJry8IIMn4UhlAzfykTWO5QKsW+Wmn1bWd3MsHInPkI101rTSNnVs6eMx95FSsuyfYepgRnUsp9k7ceUaJ/9rXtCAsAB4Q7Ena8+xpe25bvbc7hGOobSwym4fUQLkC+SXY7Ere8KWnJBXsrUyfZ0wlMEsrYYT+lZJy0XlAH2WabYHNyjBiqsriK4jLqWPsfDEZDhPC7YYzx5xfiPHfzBbMfUt9HF6/q5jpxXcb+6akbOl8Q4DPgYmcWIVxLIc5tPyR7eHXbT8GKnWQzJsqqy0jj+h1wieFJ3rYt+3DJJ3g8cl3vXbYQfLmupjM2fdr8Gi9e1xHEbV60B0c/wcOBMUyYgVCKi31FXhheBSn2sJs3+VHp10Ni3yMIlRLbMB/bYZxUE8e3HX8Jjq9Fqe8NA/ejDGFhVCn5OKdXfdW3s7tHEGzNMEulLj6M1eAWpfAwnk3Lms781bSTHeX6Yhj4L6AQAWNuMOW4AAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="colors" title="" src="/static/700ccce907d8375ab034835a7122b486/fa387/colors.png" srcset="/static/700ccce907d8375ab034835a7122b486/844a8/colors.png 163w,
+/static/700ccce907d8375ab034835a7122b486/fe46c/colors.png 325w,
+/static/700ccce907d8375ab034835a7122b486/fa387/colors.png 510w" sizes="(max-width: 510px) 100vw, 510px">
+    </span>
+  </span>
+  
+<h3>Порядок свойств, селекторов, решений</h3>
+<p>Организация свойств и селекторов поможет вам значительно улучшить понимание и читабельность кода, ускорить доступ к тем или иным решениям. Вы можете работать самостоятельно или в команде, над одним файлом или над гигантским проектом. В любой ситуации порядок будет на вашей стороне.</p>
+<p>Я рекомендую разбить ваш CSS на три части. Это может быть как в прямом смысле разделение по файлам, так и просто мысленное принятие этого правила. Первая часть — это сброс умолчаний, так называемый reset.css, вторая — правила для HTML-тегов, третья — объявления классов и уникальных идентификаторов. Любой из этих частей может и не быть, но так можно организовать порядок на верхнем уровне. В каждой из этих частей всё тоже можно организовать: теги сгруппировать по функциональному признаку, классы и идентификаторы по решениям.</p>
+<p>После того, как сделано всё вышесказанное, возникает вопрос: как организовать свойства в рамках одного селектора — по алфавиту, по длине записи, по частоте использования? Эти методы не годятся потому, что организация, навязываемая ими, не отвечает нашим целям. Вот, например, всё отсортировано по алфавиту, и чтобы увидеть какой <code>z-index</code> у абсолютно позиционированного блока, нужно выискивать его вдалеке от <code>position:absolute</code>, а свойство <code>left</code> совершенно неочевидно будет соседствовать с <code>letter-spacing</code>.</p>
+<p>Наиболее правильный метод — это функциональная группировка. Например: позиционирование, поведение блока, размеры, цвета и т.д. Один из наиболее продуманных вариантов сортировки есть <a href="http://code.google.com/p/zen-coding/wiki/ZenCSSPropertiesEn">в документации к проекту Zen Сoding</a>.</p>
+<p>Случается, что вам приходится работать с неопрятным кодом, доставшимся вам от других разработчиков. В этом случае можно автоматически пересортировать CSS-свойства в нужном вам порядке утилитой <a href="http://csscomb.ru/">CSScomb</a>.</p>
+<h3>Дополнительное окно</h3>
+<p>Несколько окон для одного файла позволяют удобно работать с отдаленными участками кода. Можно подсмотреть решение, скопировать, сверить с чем-то. Опять-таки, я берегу внимание, избавляюсь от беготни по файлу вверх и вниз.</p>
+<a href="images/split-view.png">
+    
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 510px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 55.490196078431374%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAAACXBIWXMAAAsSAAALEgHS3X78AAABzUlEQVQoz1WSa2/bIBiF/f//06RJazulS7X6GifxfMO2kmAbc8fgy3DTdt2LxAdeHs7hgANAnuclAA1jmBBEMEFb9QgNfVeDKkvTPEmqtiOwa/sefdTQdY1TxwfORRiL6Kyb23hB3bos8zyv68rpBUQ+JSzJaFGJnmC7uHx2eesUYTBNox+v3x7XJ7+uBnDfYWfBcOG5QnCE+PMLLIBuB6W0Wt9KCuqUQSCluEEVJyotGRP6C9yDwMOYCqkpVeM4zfNixx0WAlvYH0cFIYlPPWxHrS22rO9wWcUB5+xwlru9/h3XWKJ/R4vLpmzMWJTo+4/mNWi7YaSKmWnTp7ixd1ZStP18hesFESLxFxg6IAqVUtO0BvF6LHhYlVhSK23bQ38FUWBtlzVLc46pnJfpPzj3PRsJxmr367Z/hQ9PaZZCLtp5WWxSpe8KTqOzedhNL6cqg4BJ9QGTzfab8vz80j7u4M997R9OcADLdmdeeB6l9J6QjcpMizbm7ksI4YAwkEpa5STjeUlaJLXR73lyXvoeo/T0h4PaDHwY1HCX3Z5KCidzXcpI27Ho2PthczxfrzdsvdifQAnJPZdRkmTj3h2TAl0xnKfZGLN1Kf0LOChnfRQOTzwAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="split view small" title="" src="/static/7171b0a9ad1295f4a1078d0413fb2bda/fa387/split-view-small.png" srcset="/static/7171b0a9ad1295f4a1078d0413fb2bda/844a8/split-view-small.png 163w,
+/static/7171b0a9ad1295f4a1078d0413fb2bda/fe46c/split-view-small.png 325w,
+/static/7171b0a9ad1295f4a1078d0413fb2bda/fa387/split-view-small.png 510w" sizes="(max-width: 510px) 100vw, 510px">
+    </span>
+  </span>
+  
+</a>
+<h3>Сравнение содержимого построчно</h3>
+<p>Вы можете писать однострочный CSS, но вполне вероятно что вы вырастете до работы над большими проектами с множеством файлов и большим объемом CSS. Вам придётся работать с системой контроля версий, построением проекта и другими разработчиками в вашей команде. Обратите внимание на то, что разница между двумя файлами вычисляется именно построчно, и при однострочной записи вам будет труднее выявить различия, так как строка будет различаться сразу несколькими свойствами:</p>
+<a href="images/diff.png">
+    
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 510px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 28.03921568627451%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAGCAIAAABM9SnKAAAACXBIWXMAAAsSAAALEgHS3X78AAABK0lEQVQY0zWP226DMAyGef832QOsm6qqldZt3bq12qEtg5ZDAiEkDiQhJEB3M7jYZ/n3hT9ZsheeC0qrqhoKZi8lodCAaBn0GNMkQkVOEKJJQgE0wICZjFkBwnGwDJy33bH9IT9TYl3f9V03dT8MVyVlfMFFlkcJvL6zzxATUV2H38n6x1u/uMUmTHmsjbGtadvWTNEK4P4pSeM4I3q+kvvglAmkGzUqZmKa3tOmvpl9HwMURFTIunedc+14tebl7iP1jz+EqNtls9wiP+EhLsZ1Z51zdixv/VzfzfnqMX7+Co5ZxGrIqUYcMIredrF/8PNC3a+62UI/bPMTSs4UF4JTUKSiHs4NBWdHOiuMVEZL6arGcFamSU4JAaFGp+TTL21nuK6l0aqxtZF/iVBEzbxB054AAAAASUVORK5CYII=&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="diff small" title="" src="/static/7ea39e35fd93c48fb47cd47e222fda3c/fa387/diff-small.png" srcset="/static/7ea39e35fd93c48fb47cd47e222fda3c/844a8/diff-small.png 163w,
+/static/7ea39e35fd93c48fb47cd47e222fda3c/fe46c/diff-small.png 325w,
+/static/7ea39e35fd93c48fb47cd47e222fda3c/fa387/diff-small.png 510w" sizes="(max-width: 510px) 100vw, 510px">
+    </span>
+  </span>
+  
+</a>
+<h3>Доступ по селектору через поиск</h3>
+<p>Один из главных аргументов <em>однострочников</em> сводится к тому, что перед глазами сразу располагаются только нужные селекторы. Процесс поиска нужных селекторов можно банально и очень эффективно автоматизировать при помощи поиска по файлу или проекту. Пусть машина ищет, пока вы экономите своё драгоценное внимание. Никакого просматривания глазами и выискивания. Никакой прокрутки. Не напрягайте глаза больше, чем это реально нужно.</p>
+<h3>Доступ к свойству конкретного селектора по номеру строки</h3>
+<p>Номер строки можно найти так: проинспектировать нужный блок в верстке с помощью Firebug, Web Inspector или Dragonfly, затем найти нужный селектор, который срабатывает для данного блока и подсмотреть номер строки и имя файла. Далее дело техники и знания горячих клавиш вашего любимого редактора. Объем CSS-кода и его растянутость (излишняя, как считают некоторые) не имеет никакого значения в этом случае.</p>
+<h3>Комментирование</h3>
+<p>При построчной записи удобнее комментировать конкретное свойство. Например напомнить, что оно переопределено в файле ie6.css. Или указать, что эта ширина может меняться в зависимости от наличия другого класса.</p>
+<a href="images/comment.png">
+    
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 510px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 64.31372549019608%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAIAAAAmMtkJAAAACXBIWXMAAAsSAAALEgHS3X78AAAB3klEQVQoz1WS246bMBCG8/4PVqlSL6qqXakiCZvA4gNgjPFxfKBjsk3akS9sz/95Tj4FwUPM905f+5lwqZTf973suzWG3m7sdpfTVPbCuWk7eSeTECbGhBqAeLJG51z4mDqulLXo8KH6EB6aM7lcFsbxqNbYMzfKtQp8LGWPMZ5AjzFlxvwHgYFLubpNhwprPZwrLPmIRyEspakflFi1XFxKJaV0Ck6Nk+2GNcS4/2N62z6aM/ISM7bh1q2rtrUiDHpYjaz1JoQmfFRqMah6GICSS/v2+/rW8L7Xxred6cgavIcQ/CFxzp0izDGWe2fOd6mMf0bGmsn1SttWjjXtaXLNVbF5yzk/BDVtAIe79y79umxMyqPTL5i07XLAs8hvjW/JEiK84AguhEiZJTQMbDP2M3ht2OWCPDYMRzVNhjIYqJ2lfpR9NMyK42FHqJZreGZV4abBhj1GZQygYJ6dD/EVOYA6JuG+fJPfzzehNKTqNi+YVWmEHz/N1x/9nY8O4Fnzhjvnctv5XnB0xJyekclfuJREWb6QabUGUnrC2KR9054yR4ZlGkUp+X+4pg0B+OQp0eRj9M5/ztm5Fd+YZtX1klBprc/VCsL0/R3XwnnKGb9AFRCJnyJnvMgA8AfaC+PKR3PfAwAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="comment small" title="" src="/static/5a81e487c39042d310d67130b31601de/fa387/comment-small.png" srcset="/static/5a81e487c39042d310d67130b31601de/844a8/comment-small.png 163w,
+/static/5a81e487c39042d310d67130b31601de/fe46c/comment-small.png 325w,
+/static/5a81e487c39042d310d67130b31601de/fa387/comment-small.png 510w" sizes="(max-width: 510px) 100vw, 510px">
+    </span>
+  </span>
+  
+</a>
+<p>Взгляните, как комментируют свой код программисты — люди высокой организации мышления. Сложно оставить комментарий-послание себе или другим специалистам, если у вас однострочный код. И не говорите, что это вам не нужно. Когда понадобится неожиданно — будет мучительно неудобно.</p>
+<p>При должной сноровке и знании горячих клавиш вашего любимого редактора закомментировать одно свойство на одной строке — легко. Комментарий <code>/* … */</code> автоматически обхватит свойство в многострочной записи. В однострочной записи вам недоступна такая роскошь. <q>А я комментирую, ломая имя свойства иксиком или другим символом</q> — детский сад, и к тому же небезопасно для обработки браузером дальнейшего кода. Не стоит испытывать на прочность CSS-парсеры.</p>
+<h3>А у меня CSS меньше и быстрее</h3>
+<p>Теперь о мнениях из серии <q>я пишу код в одну строку потому, что так посетители не грузят пробелы или символы табуляции</q>.</p>
+<p>Версия в разработке и версия в бою — разные вещи. Версия для разработки должна быть максимально заточена под нужды разработчика и способствовать минимизации шансов на ошибку или опечатку из-за невнимательности. Для боевой версии актуальны совсем другие вещи: количество запросов к серверу, объем кода, актуальность загрузки всего кода сразу либо по частям, обфускация.</p>
+<h2>В итоге</h2>
+<p>Рекомендую пересилить себя и в целях повышения продуктивности, как личной, так и вашего проекта в целом, задуматься: почему вы пишете именно так? Может дело в простой привычке? Если вы преследуете <a href="#target-1">цель №1</a> и <a href="#target-2">цель №2</a>, то настоятельно рекомендую переходить на многострочный стиль.</p>
+<h3>Дополнительное чтение</h3>
+<ul>
+<li><a href="http://vimeo.com/17498225">CSS-менеджмент. Три года спустя</a>, доклад Вадима Макеева;</li>
+<li><a href="http://www.artlebedev.ru/tools/technogrette/soft/eclipse-ant/">Eclipse: знакомство с Ant</a>, статья Сергея Чикуёнка;</li>
+<li><a href="http://csscomb.ru/">CSScomb.ru</a>, инструменты для сортировки CSS-свойств.</li>
+</ul></div></main><footer class="footer"><p>2018 © Веб-стандарты</p></footer></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.page={"componentChunkName":"component---src-templates-article-jsx","jsonName":"articles-multiline-css-0db","path":"/articles/multiline-css/"};window.dataPath="947/path---articles-multiline-css-0-db-89a-QI0wWBwrWHJisEbcbb36rapA";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-fdf6317c57abdf654ada.js"],"component---src-templates-article-list-jsx":["/component---src-templates-article-list-jsx-d6fdd15edf4f8b89c17b.js"],"component---src-templates-article-jsx":["/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"],"component---src-pages-404-jsx":["/component---src-pages-404-jsx-a85f47ff49f987715412.js"],"component---src-pages-events-jsx":["/component---src-pages-events-jsx-4f883960193822a95f04.js"],"component---src-pages-index-jsx":["/component---src-pages-index-jsx-6d406cab1d4cc5f63755.js"]};/*]]>*/</script><script src="/webpack-runtime-1400fd0a68f967e222fb.js" async=""></script><script src="/app-fdf6317c57abdf654ada.js" async=""></script><script src="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js" async=""></script><script src="/0-152a6e34a5c4bf7cd8a5.js" async=""></script></body></html>

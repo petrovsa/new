@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="generator" content="Gatsby 2.0.1"/><title data-react-helmet="true">Веб-стандарты</title><meta data-react-helmet="true" name="description" content="Сообщество разработчиков «Веб-стандарты»"/><meta data-react-helmet="true" name="keywords" content="web standards"/><link as="script" rel="preload" href="/0-152a6e34a5c4bf7cd8a5.js"/><link as="script" rel="preload" href="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"/><link as="script" rel="preload" href="/app-fdf6317c57abdf654ada.js"/><link as="script" rel="preload" href="/webpack-runtime-1400fd0a68f967e222fb.js"/><link rel="preload" href="/static/d/293/path---articles-small-hr-elements-870-ec5-seuUEzaNlmCgoIkWpBiXcAj7qeU.json" as="fetch" crossOrigin="use-credentials"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><header class="header"><h1>Веб-стандарты</h1></header><main><h1>Элементы small и hr</h1><time>30 мая 2011</time><div><h1>Элементы small и hr</h1>
+<p><a href="http://oli.jp/">Оли Стадхольм</a> 30 мая 2011</p>
+<p>Не так давно мы писали <a href="/articles/i-b-em-strong-elements/">о презентационных элементах <code>&#x3C;i></code> и <code>&#x3C;b></code></a> из HTML4, возродившихся к новой семантической жизни. Другие два элемента, которые претерпели изменения, чтобы получить значения в HTML5 — это <code>&#x3C;small></code> и <code>&#x3C;hr></code>:</p>
+<ul>
+<li><code>&#x3C;small></code> — использовался раньше для того, чтобы просто сделать текст помельче, теперь же он предназначен для пометок и небольших надписей (<a href="http://dev.w3.org/html5/markup/small.html">W3C:Markup</a>, <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/text-level-semantics.html#the-small-element">WHATWG</a>);</li>
+<li><code>&#x3C;hr></code> — использовался раньше для создания горизонтальных линеек, теперь предназначен для смысловой разбивки на уровне текстовых блоков (<a href="http://dev.w3.org/html5/markup/hr.html">W3C:Markup</a>, <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/grouping-content.html#the-hr-element">WHATWG</a>).</li>
+</ul>
+<h2>Элемент <code>&#x3C;small></code></h2>
+<blockquote>
+<p>Элемент <code>&#x3C;small></code> представляет собой так называемые «надписи мелким шрифтом», вроде тех, что используются для предостережений и оговорок в юридических документах.
+<a href="http://dev.w3.org/html5/markup/small.html">Спецификация W3C</a></p>
+</blockquote>
+<p>Теперь <code>&#x3C;small></code> применяется для пометок и является более локальным аналогом элемента <code>&#x3C;aside></code> — для второстепенной информации на странице. Типичным примером будет следующая за основным содержимым юридическая болтовня, вроде заявлений об авторском праве в подвале, отказе от ответственности, или же информации о лицензии. Он также может быть использован для указания авторства. <strong>Не используйте его для содержимого на блочном уровне</strong> (параграфы, списки и т.д.), иначе это будет воспринято как основное содержимое.</p>
+<pre><code>&#x3C;p>
+    Я использую
+    &#x3C;span class="museo">Museo Slab&#x3C;/span>,
+    &#x3C;small class="font-license">
+        шрифт Жоса Буйвенга (exljbris)
+        &#x3C;a href="http://www.exljbris.nl/">www.exljbris.nl&#x3C;/a>
+    &#x3C;/small>
+&#x3C;/p>
+</code></pre>
+<p>Использование <code>&#x3C;small class="font-license"></code> для того, чтобы выполнить требования лицензионного соглашения</p>
+<pre><code>&#x3C;small>
+    &#x3C;a href="http://creativecommons.org/licenses/by-sa/3.0/"
+        rel="license">
+        Creative Commons Attribution Share-alike license
+    &#x3C;/a>
+&#x3C;/small>
+</code></pre>
+<p>Использование <code>&#x3C;small></code> вокруг ссылки на <a href="http://creativecommons.org/choose/">Creative Commons license</a> с <code>rel="license"</code></p>
+<p>Текст внутри <code>&#x3C;small></code> необязательно должен быть меньше, чем окружающий — если же вам нужен именно мелкий текст, то для этого лучше подойдет CSS. Используйте <code>&#x3C;small></code> только на строчном уровне. В конце концов, <code>&#x3C;small></code> не влияет на семантику <code>&#x3C;em></code> или <code>&#x3C;strong></code>.</p>
+<h2>Элемент <code>&#x3C;hr></code></h2>
+<blockquote>
+<p><code>&#x3C;hr></code> служит для смысловой разбивки на уровне блоков текста
+<a href="http://dev.w3.org/html5/markup/hr.html">Спецификация W3C</a></p>
+</blockquote>
+<p>Пообщавшись с <a href="http://ian.hixie.ch/">Яном Хиксоном</a> (редактором HTML5) я понял, что до сих пор неправильно понимал <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/content-models.html#paragraph">модель поведения содержимого</a>. Я узнал, что <code>&#x3C;hr></code> на самом деле означает <q>конец одной секции и начало другой</q> — что семантически равносильно <code>&#x3C;/section>&#x3C;section></code>. Но поскольку элементы вроде <code>&#x3C;section></code> и так указывают на это, получается, что <code>&#x3C;hr></code> больше подходит для смысловой разбивки, вроде смыслового разделения внутри блока текста или отделения одной сцены в романе от другой. В любом случае, вы можете использовать этот элемент везде, где вы используете элемент <code>&#x3C;p></code>. Из-за унылого вида в браузерах по умолчанию, <code>&#x3C;hr></code> не слишком распространён сегодня, однако это не мешает оформить его при помощи CSS в виде красивого вензеля.</p>
+
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 510px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 67.45098039215686%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAIAAAAmMtkJAAAACXBIWXMAAAsSAAALEgHS3X78AAAB90lEQVQoz3VSa3OaUBD1/0//QCcaRdEkTTsq+ERFiBJDEhH08vCRECMIGm2TSWum33ouTu2HjjOHZe+yhz13d2OzbVXSUq37pKwzopbqjtjOMCNpTM/KXRlpHK+tXENN3E4u2lqqeZuQ9PT4pbL4JT7/bMVABlPsp66trKxnwGwPGIWwyoiV9TSOqnOO45WRUccXCsniF3fTL4qZm21rMfdNQE2kdkm2S1h5wIDTs89QNgI45/gkaUkQHl+Fp7eGG2H+3oyh+vwdaP61zYMPbf5HG/YQh38AlY3nGJywpLlfZ99r+9T/cZQMYZ1RpqHGJ5vKYnec7O2oNlgAOr2d6H3sfSn4LcP+i0c5ESLZoNlhCd0fr8rOqmwF/HRTtUPeWZcnLxUcnZDGnVVpuq1NNlX4NHldRudieJ3xnzDGWu+k1T8V1LhwA5zAYrztflJQE6270z2wCPWbOBxpkKKjMv0i8u5nlxhSJxoY5mkH/GhRGDzlrYAzngumD5vXHi6JxxnzPCzxufle9nCR38+2M2SxAwP3G75BJ34ROVQ28YsPP+q4i7nkyJKzgxKV7b4Kw0UBOwQxYKI4FgNqK93PuILYT0o6gz3DpRQzKxtpBOvwSRa7QMmQRLyiDpEhby4BDg2DWtrINW0hgCBqjLyiFZQgBMNHw/8ArpVviHmtq2YAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="&#x41E;&#x444;&#x43E;&#x440;&#x43C;&#x43B;&#x435;&#x43D;&#x438;&#x435; hr &#x432; &#x432;&#x438;&#x434;&#x435; &#x432;&#x435;&#x43D;&#x437;&#x435;&#x43B;&#x44F;" title="" src="/static/02bad7522fb3bf84c33f063f1ba400a8/fa387/hr-separator.png" srcset="/static/02bad7522fb3bf84c33f063f1ba400a8/844a8/hr-separator.png 163w,
+/static/02bad7522fb3bf84c33f063f1ba400a8/fe46c/hr-separator.png 325w,
+/static/02bad7522fb3bf84c33f063f1ba400a8/fa387/hr-separator.png 510w" sizes="(max-width: 510px) 100vw, 510px">
+    </span>
+  </span>
+  
+<pre><code>hr {
+    margin: 3em 0;
+    height: 24px;
+    border: 0;
+    background: url(flourish.png) 50% 50% no-repeat;
+}
+</code></pre>
+<p>Оформите <code>&#x3C;hr></code> красиво: уберите рамку, поля и добавьте фоновую картинку.</p>
+<p>IE7 и младше оправдывают свою дурную репутацию, добавляя рамку вокруг изображения, несмотря на наши усилия, <a href="http://blog.neatlysliced.com/2008/03/hr-image-replacement/">но и это можно исправить</a>. Или же вы можете просто скрыть <code>&#x3C;hr></code> в стилях для IE7 и младше. Если переход между частями содержимого очевиден или разделение чисто визуальное, а не смысловое, то вместо <code>&#x3C;hr></code> лучше нарисовать рамку или фоновую картинку на другом элементе.</p>
+
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 510px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 13.725490196078432%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAADCAIAAAAcOLh5AAAACXBIWXMAAAsSAAALEgHS3X78AAAAU0lEQVQI12P4+uEuGvry/vaXd7dBJAjdgTFuY6pkwBR6cOfYo7vHnzw49eD2kaf3Tz2+f/LurcPPHp0BGkRY8+d3EAvvfH57E4hAjHe3v2LoBCIAbZajWYiNVqEAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="&#x41D;&#x435;&#x43F;&#x43E;&#x434;&#x445;&#x43E;&#x434;&#x44F;&#x449;&#x438;&#x439; &#x441;&#x43B;&#x443;&#x447;&#x430;&#x439; &#x434;&#x43B;&#x44F; &#x438;&#x441;&#x43F;&#x43E;&#x43B;&#x44C;&#x437;&#x43E;&#x432;&#x430;&#x43D;&#x438;&#x44F; hr &#x43D;&#x430; Cork&#x2019;d." title="" src="/static/5cf762ce86f4dcf027ee6b3fe51a4e10/fa387/corkd.png" srcset="/static/5cf762ce86f4dcf027ee6b3fe51a4e10/844a8/corkd.png 163w,
+/static/5cf762ce86f4dcf027ee6b3fe51a4e10/fe46c/corkd.png 325w,
+/static/5cf762ce86f4dcf027ee6b3fe51a4e10/fa387/corkd.png 510w" sizes="(max-width: 510px) 100vw, 510px">
+    </span>
+  </span>
+  
+<p>На <a href="http://content.corkd.com/">Cork’d</a> используеся декоративная фоновая картинка для заголовков. Но несмотря на обилие линеек, это совсем неподходящий случай для использования <code>&#x3C;hr></code>.</p>
+<h2>В заключение</h2>
+<p>В момент выхода HTML4, презентационные элементы <code>&#x3C;basefont></code>, <code>&#x3C;font></code>, <code>&#x3C;s></code>, <code>&#x3C;strike></code> и <code>&#x3C;u></code> уже были помечены как нежелательные для использования, в пользу применения CSS. HTML5 завершил этот процесс, избавившись от элементов <code>&#x3C;big></code> и <code>&#x3C;tt></code>.</p>
+<p>Остальные презентационные элементы из HTML4 — долго игнорируемые <code>&#x3C;small></code> и <code>&#x3C;hr></code> (<a href="/articles/i-b-em-strong-elements/">наряду с <code>&#x3C;i></code> и <code>&#x3C;b></code></a>) — были пересмотрены в HTML5 с учетом их полезных, медиа-независимых семантических свойств, которые имеют отношение к их типичному использованию. Будете ли <em>вы</em> использовать их? Выскажитесь в комментариях!</p>
+<p>Перевод оригинальной статьи «<a href="http://html5doctor.com/small-hr-element/">The small &#x26; hr elements</a>» <a href="http://oli.jp/">Оли Стадхольма</a> (Oli Studholme), опубликованной на сайте <a href="http://html5doctor.com/">HTML5Doctor.com</a>.</p></div></main><footer class="footer"><p>2018 © Веб-стандарты</p></footer></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.page={"componentChunkName":"component---src-templates-article-jsx","jsonName":"articles-small-hr-elements-870","path":"/articles/small-hr-elements/"};window.dataPath="293/path---articles-small-hr-elements-870-ec5-seuUEzaNlmCgoIkWpBiXcAj7qeU";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-fdf6317c57abdf654ada.js"],"component---src-templates-article-list-jsx":["/component---src-templates-article-list-jsx-d6fdd15edf4f8b89c17b.js"],"component---src-templates-article-jsx":["/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"],"component---src-pages-404-jsx":["/component---src-pages-404-jsx-a85f47ff49f987715412.js"],"component---src-pages-events-jsx":["/component---src-pages-events-jsx-4f883960193822a95f04.js"],"component---src-pages-index-jsx":["/component---src-pages-index-jsx-6d406cab1d4cc5f63755.js"]};/*]]>*/</script><script src="/webpack-runtime-1400fd0a68f967e222fb.js" async=""></script><script src="/app-fdf6317c57abdf654ada.js" async=""></script><script src="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js" async=""></script><script src="/0-152a6e34a5c4bf7cd8a5.js" async=""></script></body></html>

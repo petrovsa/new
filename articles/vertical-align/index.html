@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="generator" content="Gatsby 2.0.1"/><title data-react-helmet="true">Веб-стандарты</title><meta data-react-helmet="true" name="description" content="Сообщество разработчиков «Веб-стандарты»"/><meta data-react-helmet="true" name="keywords" content="web standards"/><link as="script" rel="preload" href="/0-152a6e34a5c4bf7cd8a5.js"/><link as="script" rel="preload" href="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"/><link as="script" rel="preload" href="/app-fdf6317c57abdf654ada.js"/><link as="script" rel="preload" href="/webpack-runtime-1400fd0a68f967e222fb.js"/><link rel="preload" href="/static/d/626/path---articles-vertical-align-007-09a-paCBAsa4My2eRzRpDWw1nCpGDHg.json" as="fetch" crossOrigin="use-credentials"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" role="group"><header class="header"><h1>Веб-стандарты</h1></header><main><h1>Разбираемся с vertical-align</h1><time>9 марта 2012</time><div><h1>Разбираемся с vertical-align</h1>
+<p><a href="http://www.impressivewebs.com/">Луис Лазарис</a> 9 марта 2012</p>
+<p>«Опять <code>vertical-align</code> не работает!» — вздохнёт веб-разработчик.</p>
+<p>CSS-свойство <code>vertical-align</code> — одно из тех, которые с виду очень просты, но могут вызвать вопросы у начинающих разработчиков. Я думаю, что даже у многих ветеранов CSS когда-то были проблемы с тем, чтобы его до конца понять.</p>
+<p>В этой статье я постараюсь в понятной форме рассказать про это свойство.</p>
+<h2>Чего оно не делает</h2>
+<p>Распространенное заблуждение о <code>vertical-align</code> состоит в том, что применяясь к одному элементу, оно заставляет все элементы внутри него изменить свою вертикальную позицию. Например, когда элементу задан <code>vertical-align:top</code>, это подразумевает, что его содержимое поднимется к его же верхней границе.</p>
+<p>Вспоминаются времена, когда мы делали раскладки на основе таблиц:</p>
+<pre><code>&#x3C;td valign="top">
+    Что-нибудь…
+&#x3C;/td>
+</code></pre>
+<p>В данном примере с ячейкой таблицы использование свойства <code>valign</code> (в настоящее время <a href="http://www.w3.org/TR/html5/obsolete.html#non-conforming-features">исключенного из HTML5</a>) приведёт к тому, что элементы внутри ячейки прижмутся к её верху. И естественно, когда верстальщики начинают использовать <code>vertical-align</code>, они думают, что получится то же самое, и содержимое элемента выровняется в соответствии со значением свойства.</p>
+<p>Но <code>vertical-align</code> работает не так.</p>
+<h2>Чем оно является на самом деле</h2>
+<p>Использование свойства <code>vertical-align</code> может быть разбито на три простых для понимания правила:</p>
+<ol>
+<li>Оно применяется только к строчным элементам <code>inline</code> или строчным блокам <code>inline-block</code>.</li>
+<li>Оно влияет на выравнивание самого элемента, а не его содержимого (кроме случаев, когда применяется к ячейкам таблицы).</li>
+<li>Когда оно применяется к ячейке таблицы, выравнивание влияет на содержимое ячейки, а не на неё саму.</li>
+</ol>
+<p>Иными словами, следующий код не даст никакого эффекта:</p>
+<pre><code>div {
+    vertical-align: middle; /* эта строка бесполезна */
+}
+</code></pre>
+<p>Почему? Потому что <code>&#x3C;div></code> — это не строчный элемент и даже не строчный блок. Конечно, если вы сделаете его строчным или строчным блоком, то применение <code>vertical-align</code> даст желаемый эффект.</p>
+<p>С другой стороны, при правильном применении (к строчному элементу или строчному блоку), свойство <code>vertical-align</code> заставит текущий элемент выровняться относительно других строчных элементов.</p>
+<p>Выше или ниже расположится элемент, будет зависеть от высоты строчных элементов на этой же строке или от свойства <code>line-height</code>, заданного для неё.</p>
+<h2>Несколько картинок</h2>
+<p>Вот картинка с пояснительным текстом, которая поможет вам понять, что происходит при вертикальном выравнивании строчных элементов:</p>
+
+  <span class="gatsby-resp-image-wrapper" style="position: relative; display: block; ; max-width: 510px; margin-left: auto; margin-right: auto;">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom: 78.43137254901961%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAQCAIAAACZeshMAAAACXBIWXMAAAsSAAALEgHS3X78AAABtUlEQVQoz52TSW/CMBCF/f9/BlxAFAEHisSRM0icWBTCEghrEghLmqRA++EpToV66jtYY3uWN29sdb/fv/4L1e/3x+NxEASu687nc9/3LcvixLZtDMdxttvtbrezNdhaGlEUPYLxJoxgz/MCjc1ms16vl8slq6fB4Wq14mS/37saSZI8gm+326cGyT40Eo3oiTiOz+czbjQozqw/tKFK1sVicblczF2apmKnGtfrNQzD2WyGs/MLqlAoFIvFfD7PBcnwkwpSihNZJ5NJrVZrNBrNZrNer79rqEqlUq1WS6USLRlXWZGj0+l0u93T6cRWuECTApJdvWlQHxloGG3gfzwesdE8l8txhYSSEfR6PTNdBRkIlMtlUhLfarXa7fZoNEJqmoQUJJkWrpQlDJ+ssihxOBxQGG1giHhUFrWwieSKrazT6VQMoEg5HA7xEybkHgwGwpAtrszWqADQNaNNGE3GGjJhuo2fYMIm7x/BeKMq6XmDCMPqPeFryEs0oMcsGMuUkkcmNgXFePk5jCMLfvkotICECIYhHYUaGLDjnEZk7K/BpKQLqlGfSFFYVGBrnjpb8f8Gme2CY00X4doAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;">
+      <img class="gatsby-resp-image-image" style="width: 100%; height: 100%; margin: 0; vertical-align: middle; position: absolute; top: 0; left: 0; box-shadow: inset 0px 0px 0px 400px transparent;" alt="vertical align" title="" src="/static/4ae65d5b8a67c54bf8558bd8d2df1a94/fa387/vertical-align.png" srcset="/static/4ae65d5b8a67c54bf8558bd8d2df1a94/844a8/vertical-align.png 163w,
+/static/4ae65d5b8a67c54bf8558bd8d2df1a94/fe46c/vertical-align.png 325w,
+/static/4ae65d5b8a67c54bf8558bd8d2df1a94/fa387/vertical-align.png 510w" sizes="(max-width: 510px) 100vw, 510px">
+    </span>
+  </span>
+  
+<p><a href="http://jsbin.com/isuvob/1/edit#html,live">А вот пример</a>, в котором есть несколько строчных элементов, один из которых прижат к верху.</p>
+<h2>Ключевые слова</h2>
+<p>Несколько ключевых слов, которые можно задавать в качестве значений для свойства <code>vertical-align</code>:</p>
+<ul>
+<li><code>baseline</code>, значение по умолчанию или «изначальное»</li>
+<li><code>bottom</code></li>
+<li><code>middle</code></li>
+<li><code>sub</code></li>
+<li><code>super</code></li>
+<li><code>text-bottom</code></li>
+<li><code>text-top</code></li>
+<li><code>top</code></li>
+</ul>
+<p>Возможно, многие из них вы не будете использовать, но было бы неплохо знать все имеющиеся варианты. Например, <a href="http://jsbin.com/isuvob/edit#html,live">на демо-странице</a>, из-за того что значение <code>vertical-align</code> для <code>&#x3C;input></code> установлено как <code>top</code>, он выровнен по самому высокому элементу в строке (большой картинке).</p>
+<p>Однако если вы не хотите выравнивать элемент относительно картинок или других строчных элементов, обладающих блочными свойствами, вы можете выбрать значение <code>text-top</code> или <code>text-bottom</code>, тогда элементы будут выравниваться относительно текста в строке.</p>
+<h2>О ключевом слове <code>middle</code></h2>
+<p>К сожалению, правило <code>vertical-align:middle</code> не выровняет строчный элемент по середине самого высокого элемента в строке (как вы, возможно, ожидали). Вместо этого значение <code>middle</code> заставит элемент выровняться по середине высоты гипотетической строчной буквы <strong>«x»</strong> (так же называемой <em>x-height</em>). Потому, мне кажется, что это значение на самом деле должно называться <code>text-middle</code>, чтобы стало понятно, какой будет результат.</p>
+<p>Взгляните <a href="https://jsbin.com/apiqog/edit#html,live">на пример</a>, где я увеличил размер шрифта так, чтобы размер <em>x-height</em> стал гораздо больше. После этого станет понятно, что значение <code>middle</code> не получится использовать очень часто.</p>
+<h2>Числовые значения</h2>
+<p>Возможно, вы не знали о том, что <code>vertical-align</code> принимает числовые и процентные значения. Однако это так, и вот примеры их использования:</p>
+<pre><code>input {
+    vertical-align: 100px;
+}
+
+span {
+    vertical-align: 50%;
+}
+
+img {
+    vertical-align: -300px;
+}
+</code></pre>
+<p>Несмотря на то, что вы можете прочитать <a href="http://www.w3.org/TR/CSS21/visudet.html#propdef-vertical-align">в спецификации</a> раздел, описывающий, какие есть ключевые слова и значения, я думаю, гораздо полезней будет самостоятельно <a href="http://jsbin.com/isuvob/edit#html,live">поиграть с ними</a> и сравнить результаты.</p>
+<h2>Заключение</h2>
+<p>Если в одной фразе подводить итог о том, как использовать это традиционно неправильно понимаемое свойство, я бы сказал:</p>
+<p>Свойство <code>vertical-align</code> работает только со строчными элементами или строчными блоками и ячейками таблицы. В случае применения не к ячейкам таблицы, оно действует на сам элемент, а не на его содержимое.</p>
+<p>Перевод оригинальной статьи «<a href="http://www.impressivewebs.com/css-vertical-align/">Understanding CSS’s vertical-align Property</a>» <a href="http://www.impressivewebs.com/about/">Луиса Лазариса</a> (Louis Lazaris), опубликованной на сайте «<a href="http://www.impressivewebs.com/">Impressive Webs</a>».</p>
+<p>Перевод выполнил <a href="http://htmlhero.ru/">Андрей Мотошин</a>.</p></div></main><footer class="footer"><p>2018 © Веб-стандарты</p></footer></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.page={"componentChunkName":"component---src-templates-article-jsx","jsonName":"articles-vertical-align-007","path":"/articles/vertical-align/"};window.dataPath="626/path---articles-vertical-align-007-09a-paCBAsa4My2eRzRpDWw1nCpGDHg";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"app":["/app-fdf6317c57abdf654ada.js"],"component---src-templates-article-list-jsx":["/component---src-templates-article-list-jsx-d6fdd15edf4f8b89c17b.js"],"component---src-templates-article-jsx":["/component---src-templates-article-jsx-da40a148dbaf87f71d30.js"],"component---src-pages-404-jsx":["/component---src-pages-404-jsx-a85f47ff49f987715412.js"],"component---src-pages-events-jsx":["/component---src-pages-events-jsx-4f883960193822a95f04.js"],"component---src-pages-index-jsx":["/component---src-pages-index-jsx-6d406cab1d4cc5f63755.js"]};/*]]>*/</script><script src="/webpack-runtime-1400fd0a68f967e222fb.js" async=""></script><script src="/app-fdf6317c57abdf654ada.js" async=""></script><script src="/component---src-templates-article-jsx-da40a148dbaf87f71d30.js" async=""></script><script src="/0-152a6e34a5c4bf7cd8a5.js" async=""></script></body></html>
